@@ -5,9 +5,10 @@ Android设计模式源码解析之${模式名}
 > 分析者：[${分析者}](${分析者 Github 地址})，分析状态：未完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
 
 
-  
+`复制一份到自己的项目文件夹下，然后根据自己项目替换掉 ${} 内容，删掉本行及上面两行。`   
 
-`复制一份到自己的项目文件夹下，然后根据自己项目替换掉 ${} 内容，删掉本行及上面两行。`  
+`可以参考[Mr.Simple的单例模式](singleton)` .
+ 
 
 ## 1. 模式介绍  
  
@@ -20,11 +21,7 @@ Android设计模式源码解析之${模式名}
  
 
 ## 2. UML类图
-主要功能流程图  
-
-- uml图相关资料参考[UML类图与类的关系详解](http://www.uml.org.cn/oobject/201104212.asp) 、[UML类图中的几种关系总结](http://blog.csdn.net/bboyfeiyu/article/details/24458611);
-- 可使用 [Google Drawing](https://docs.google.com/drawings)、[Visio](http://products.office.com/en-us/visio/flowchart-software)、[StarUML](http://staruml.io/) 等工具完成，windows下的绘图软件推荐使用Edraw Max，Mac下推荐使用OmniGraffle。  
-- 非所有项目必须，不需要的请先在群里反馈     
+ 
 
 ### 角色介绍
 
