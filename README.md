@@ -9,7 +9,7 @@
 
 ## 编写步骤
 1. 在模式对应的文件夹下以你的用户名建立一个文件夹，例如我分析的是适配器模式，那么我在adapter目录下建立一个mr.simple文件夹；
-2. 将template.md拷贝一份到adapter/mr.simple目录下，并且修改为: 模式名.md，例如adapter.md；
+2. 将template.md拷贝一份到adapter/mr.simple目录下，并且修改为readme.md；
 3. 所需图片统一放到你的用户名文件夹的images目录下,例如adapter/mr.simple/images；
 4. 按照[template.md](template.md)的格式将模式分析的markdown文件编写完毕；
 5. 提交本地修改，将本地的提交push线上。
