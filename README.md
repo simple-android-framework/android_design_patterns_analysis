@@ -8,21 +8,26 @@
 **<font color="red">QQ交流群: 413864859,希望大家踊跃参与进来。</font>**
 
 ## 编写步骤
-1. 在模式对应的文件夹下以你的用户名建立一个文件夹，例如我分析的是适配器模式，那么我在adapter目录下建立一个mr.simple文件夹；
-2. 将template.md拷贝一份到adapter/mr.simple目录下，并且修改为readme.md；
-3. 所需图片统一放到你的用户名文件夹的images目录下,例如adapter/mr.simple/images；
-4. 按照[template.md](template.md)的格式将模式分析的markdown文件编写完毕；
-5. 提交本地修改，将本地的提交push线上。
+1. 填写[任务表](#schedule);
+2. 在模式对应的文件夹下以你的用户名建立一个文件夹，例如我分析的是适配器模式，那么我在adapter目录下建立一个mr.simple文件夹；
+3. 将template.md拷贝一份到adapter/mr.simple目录下，并且修改为readme.md；
+4. 所需图片统一放到你的用户名文件夹的images目录下,例如adapter/mr.simple/images；
+5. 按照[template.md](template.md)的格式将模式分析的markdown文件编写完毕；
+6. 提交本地修改，将本地的提交push线上。
  
 样例大家可以参考[Mr.Simple的单例模式分析](singleton/mr.simple)。    
 
 
-## 参考资料 
-* [GOF的设计模式：可复用面向对象软件的基础](http://pan.baidu.com/s/1i3zjaIx)
-* [设计模式之禅](http://pan.baidu.com/s/1sjjZCvj)
-* [Java与模式](http://pan.baidu.com/s/1i3sxzyH)
-* [java-design-patterns](https://github.com/iluwatar/java-design-patterns)
-* [Java之美[从菜鸟到高手演变]之设计模式](http://blog.csdn.net/zhangerqing/article/details/8194653)
+<b id="schedule"></b>
+## 任务表
+| 	模式名 		 | 		分类  	 | 		分析者    |
+| ------------- |:-------------:| ------------- |
+|    单例模式    |  [singleton](singleton/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
+|    Builder模式    |  [builder](builder/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
+|    外观模式    |  [facade](facade/elsdnwn)	 | [elsdnwn](https://github.com/elsdnwn)
+|    模板方法    | [template-method](template-method/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
+|    适配器模式  | [adapter](adapter/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
+
 
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
@@ -49,14 +54,12 @@
 |    状态模式  	|    [state](state)				|    
 | 	 策略模式	     |     [strategy](strategy)	 	| 
 |    模板方法模式  |   [template-method](template-method) |    
-| 	 访问者模式	 |     [visitor](visitor)	 	|   
+| 	 访问者模式	 |     [visitor](visitor)	 	|     
 
-## 任务表
-| 	模式名 		 | 		分类  	 | 		分析者    |
-| ------------- |:-------------:| ------------- |
-|    单例模式    |  [singleton](singleton/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
-|    Builder模式    |  [builder](builder/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
-|    外观模式    |  [facade](facade/elsdnwn)	 | [elsdnwn](https://github.com/elsdnwn)
-| 模板方法 | [template-method](template-method/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
-| 适配器模式 | [adapter](adapter/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
+## 参考资料 
+* [GOF的设计模式：可复用面向对象软件的基础](http://pan.baidu.com/s/1i3zjaIx)
+* [设计模式之禅](http://pan.baidu.com/s/1sjjZCvj)
+* [Java与模式](http://pan.baidu.com/s/1i3sxzyH)
+* [java-design-patterns](https://github.com/iluwatar/java-design-patterns)
+* [Java之美[从菜鸟到高手演变]之设计模式](http://blog.csdn.net/zhangerqing/article/details/8194653)
 
