@@ -47,3 +47,4 @@
 | 	模式名 		 | 		分类  	 | 		分析者    |
 | ------------- |:-------------:| ------------- |
 |    单例模式    |  [singleton](singleton/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
+|    Builder模式    |  [builder](builder/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
