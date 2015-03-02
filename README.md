@@ -16,6 +16,14 @@
  
 样例大家可以参考[Mr.Simple的单例模式分析](singleton/mr.simple)。    
 
+
+## 参考资料 
+* [GOF的设计模式：可复用面向对象软件的基础](http://pan.baidu.com/s/1i3zjaIx)
+* [设计模式之禅](http://pan.baidu.com/s/1sjjZCvj)
+* [Java与模式](http://pan.baidu.com/s/1i3sxzyH)
+* [java-design-patterns](https://github.com/iluwatar/java-design-patterns)
+* [Java之美[从菜鸟到高手演变]之设计模式](http://blog.csdn.net/zhangerqing/article/details/8194653)
+
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
 | ------------- |:-------------:| 
