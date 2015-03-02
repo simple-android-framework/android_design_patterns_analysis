@@ -47,3 +47,4 @@
 | 	模式名 		 | 		分类  	 | 		分析者    |
 | ------------- |:-------------:| ------------- |
 |    单例模式    |  [singleton](singleton/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
+|    外观模式    |  [facade](facade/elsdnwn)	 | [elsdnwn](https://github.com/elsdnwn)
