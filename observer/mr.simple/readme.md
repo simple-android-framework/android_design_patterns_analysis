@@ -107,7 +107,7 @@ public class Test {
 
 ```
 
-输入结果: 
+输出结果: 
 
 ```
 Hi, coder-3, AndroidWeekly更新啦, 内容 : 新的一期AndroidWeekly来啦!
