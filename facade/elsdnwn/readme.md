@@ -1,8 +1,10 @@
-Android设计模式源码解析之${模式名} 
+Android设计模式源码解析之外观模式 
 ====================================
 > 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework/android_design_patterns_analysis) 中 外观模式 分析  
 > Android系统版本： 2.3         
 > 分析者：[elsdnwn](https://github.com/elsdnwn)，分析状态：已完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
+
+`问题有两个: 1、简单实现的示例需要更具体一些，比如模拟使用facade模式来实现某个确切功能；2、没有对Android源码中使用的Facade模式进行分析。`    可以参考[Mr.Simple的单例模式分析](../../singleton/mr.simple)  
 
 
 ## 1. 模式介绍  
@@ -16,7 +18,7 @@ Android设计模式源码解析之${模式名}
 	3、在维护一个遗留的大型系统时，可能这个系统已经非常难以维护和扩展了，但因为它包含非常重要的功能，新的需求开发必须依赖于它。
 
 ## 2. UML类图
- ![url](images/facade-elsdnwn-uml.png)
+ ![url](images/facade-elsdnw-uml.png)
 
 ### 角色介绍
 * Client : 客户端。
