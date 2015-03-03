@@ -21,11 +21,12 @@ Android设计模式源码解析之外观模式(Facade)
  ![url](images/facade-elsdnwn-uml.png)
 
 ### 角色介绍
-* Client : 客户端。
-* Facade : 外观类，将客户端请求给子系统。
-* MoudleA : 子系统类A，处理Facade外观类对象指派的请求。
-* MoudleB : 子系统类B，处理Facade外观类对象指派的请求。
-* MoudleC : 子系统类C，处理Facade外观类对象指派的请求。
+* CustomerA : 顾客A去超市购买所需物品。
+* CustomerB : 顾客B去超市购买所需物品。
+* Supermarket : 超市，专门销售厂商的物品，供顾客购买。
+* Towel : 毛巾类，TowelFactory:生成毛巾的厂商。
+* Vegetables : 蔬菜类，VegetablesFactory:种植蔬菜的厂商。
+* Computer : 电脑类，ComputerFactory:生产电脑的厂商。
 
 
 ## 3. 模式的简单实现
@@ -38,14 +39,27 @@ Android设计模式源码解析之外观模式(Facade)
 package com.elsdnwn.Facade;
 
 /**
- * @ClassName ModuleA
- * @Description 子系统A功能处理 
- * @author elsdnwn
- */
-public class ModuleA {
-	// do soming...
-	public void testA() {
-		System.out.println("Call the testA ModuleA method.");
+ * @ClassName Towel
+ * @Description 一个毛巾类
+ * @author elsdnwn  
+ */
+class Towel {
+	public String toString() {
+		return "一条毛巾";
+	}
+}
+
+/**
+ * @ClassName TowelFactory
+ * @Description 生成毛巾的厂商
+ * @author Liujy  
+ */
+class TowelFactory {
+	/**
+	 * 卖毛巾
+	 */
+	public Towel saleTowel() {
+		return new Towel();
 	}
 }
 
@@ -54,14 +68,27 @@ public class ModuleA {
 package com.elsdnwn.Facade;
 
 /**
- * @ClassName ModuleB
- * @Description 子系统B功能处理 
- * @author elsdnwn
+ * @ClassName Vegetables
+ * @Description 一个蔬菜类
+ * @author elsdnwn  
+ */
+class Vegetables {
+	public String toString() {
+		return "一箱蔬菜";
+	}
+}
+
+/**
+ * @ClassName VegetablesFactory
+ * @Description 种植蔬菜的厂商 
+ * @author Liujy
  */
-public class ModuleB {
-	// do soming...
-	public void testB() {
-		System.out.println("Call the testB ModuleB method.");
+class VegetablesFactory {
+	/**
+	 * 卖蔬菜
+	 */
+	public Vegetables saleVegetables() {
+		return new Vegetables();
 	}
 }
 
@@ -70,14 +97,27 @@ public class ModuleB {
 package com.elsdnwn.Facade;
 
 /**
- * @ClassName ModuleC
- * @Description 子系统C功能处理 
- * @author elsdnwn
+ * @ClassName Computer
+ * @Description 一个电脑类
+ * @author elsdnwn  
+ */
+class Computer {
+	public String toString() {
+		return "一台笔记本";
+	}
+}
+
+/**
+ * @ClassName ComputerFactory
+ * @Description 生产电脑的厂商 
+ * @author Liujy
  */
-public class ModuleC {
-	// do soming...
-	public void testC() {
-		System.out.println("Call the testC ModuleC method.");
+class ComputerFactory {
+	/**
+	 * 卖电脑
+	 */
+	public Computer saleComputer() {
+		return new Computer();
 	}
 }
 
@@ -86,21 +126,37 @@ public class ModuleC {
 package com.elsdnwn.Facade;
 
 /**
- * @ClassName Facade
- * @Description 满足客户端需要的功能
- * @author elsdnwn
- */
-public class Facade {
-	// 满足客户端需要的功能
-	public void test() {
-		ModuleA a = new ModuleA();
-		a.testA();
-		ModuleB b = new ModuleB();
-		b.testB();
-		ModuleC c = new ModuleC();
-		c.testC();
+ * @ClassName Supermarket
+ * @Description 超市(沃尔玛、家乐福、丹尼斯) ，专门销售厂商的物品，供顾客购买
+ * @author Liujy  
+ */
+public class Supermarket {
+
+	/**
+	 * 超市销售毛巾
+	 */
+	public Towel saleTowel() {
+		TowelFactory mTowelFactory = new TowelFactory();
+		return mTowelFactory.saleTowel();
+	}
+
+	/**
+	 * 超市销售蔬菜
+	 */
+	public Vegetables saleVegetables() {
+		VegetablesFactory mVegetablesFactory = new VegetablesFactory();
+		return mVegetablesFactory.saleVegetables();
+	}
+
+	/**
+	 * 超市销售电脑
+	 */
+	public Computer saleComputer() {
+		ComputerFactory mComputerFactory = new ComputerFactory();
+		return mComputerFactory.saleComputer();
 	}
 }
+
 
 
 
@@ -108,24 +164,60 @@ package com.elsdnwn.Facade;
 
 /**
  * @ClassName Test
- * @Description 测试类
- * @author elsdnwn
- */
-public class Test {
+ * @Description 顾客A来到超市购买所需物品，不需要跑到生产厂商那里，也不用管物品是怎么生产的
+ * @author Liujy  
+ */
+public class CustomerA {
 
 	public static void main(String[] args) {
+		Supermarket mSupermarketA = new Supermarket();
+		// 买毛巾
+		System.out.println("顾客A买了：" + mSupermarketA.saleTowel());
+		// 买蔬菜
+		System.out.println("顾客A买了：" + mSupermarketA.saleVegetables());
+		// 买电脑
+		System.out.println("顾客A买了：" + mSupermarketA.saleComputer());
 
-		Facade facade = new Facade();
-		facade.test();
 	}
 
 }
 
 输出结果：
 
-Call the testA ModuleA method.
-Call the testB ModuleB method.
-Call the testC ModuleC method.
+顾客A买了：一条毛巾
+顾客A买了：一箱蔬菜
+顾客A买了：一台笔记本
+
+
+
+package com.elsdnwn.Facade;
+
+/**
+ * @ClassName Test
+ * @Description 顾客B来到超市购买所需物品，不需要跑到生产厂商那里，也不用管物品是怎么生产的
+ * @author Liujy  
+ */
+public class CustomerB {
+
+	public static void main(String[] args) {
+		Supermarket customerB = new Supermarket();
+		// 买毛巾
+		System.out.println("顾客B买了：" + customerB.saleTowel());
+		// 买蔬菜
+		System.out.println("顾客B买了：" + customerB.saleVegetables());
+		// 买电脑
+		System.out.println("顾客B买了：" + customerB.saleComputer());
+
+	}
+
+}
+
+输出结果：
+
+顾客B买了：一条毛巾
+顾客B买了：一箱蔬菜
+顾客B买了：一台笔记本
+
 
 ``` 
 
