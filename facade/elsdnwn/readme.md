@@ -1,4 +1,4 @@
-Android设计模式源码解析之外观模式 
+Android设计模式源码解析之外观模式(Facade)
 ====================================
 > 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework/android_design_patterns_analysis) 中 外观模式 分析  
 > Android系统版本： 2.3         
@@ -18,7 +18,7 @@ Android设计模式源码解析之外观模式
 	3、在维护一个遗留的大型系统时，可能这个系统已经非常难以维护和扩展了，但因为它包含非常重要的功能，新的需求开发必须依赖于它。
 
 ## 2. UML类图
- ![url](images/facade-elsdnw-uml.png)
+ ![url](images/facade-elsdnwn-uml.png)
 
 ### 角色介绍
 * Client : 客户端。
