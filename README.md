@@ -28,6 +28,7 @@
 |    外观模式    |  [facade](facade/elsdnwn)	 | [elsdnwn](https://github.com/elsdnwn)
 |    模板方法    | [template-method](template-method/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
 |    适配器模式  | [adapter](adapter/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
+|    观察者模式  | [observer](observer/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
 
 
 ## 模式与文件夹对应列表
