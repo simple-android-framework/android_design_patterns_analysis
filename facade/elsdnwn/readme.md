@@ -4,7 +4,6 @@ Android设计模式源码解析之外观模式(Facade)
 > Android系统版本： 2.3         
 > 分析者：[elsdnwn](https://github.com/elsdnwn)，分析状态：已完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
 
-`问题有两个: 1、简单实现的示例需要更具体一些，比如模拟使用facade模式来实现某个确切功能；2、没有对Android源码中使用的Facade模式进行分析。`    可以参考[Mr.Simple的单例模式分析](../../singleton/mr.simple)  
 
 
 ## 1. 模式介绍  
@@ -309,7 +308,8 @@ public class MainActivity extends Activity {
 	    public void removeViewImmediate(View view);
 
 	    /**
-	     * WindowManager的LayoutParams子类内容十分丰富。其实WindowManager.java的主要内容就是由这个类定义构成。它的定义如下：
+	     * WindowManager的LayoutParams子类内容十分丰富。其实WindowManager.java的主要内容就是由这个类定义构成。
+	     * 它的定义如下：
 	     */
 	    public static class LayoutParams extends ViewGroup.LayoutParams implements Parcelable {
 
