@@ -1,6 +1,6 @@
 Android设计模式源码解析之${模式名} 
 ====================================
-> 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework/android_design_patterns_analysis) 中 ${模式名} 分析  
+> 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis) 中 ${模式名} 分析  
 > Android系统版本： ${系统版本号，例如 4.2.1}         
 > 分析者：[${分析者}](${分析者 Github 地址})，分析状态：未完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
 
