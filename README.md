@@ -8,9 +8,7 @@
 
 
 ## 编写步骤
-1. 按照[template.md](template.md)的格式将模式分析的markdown文件编写完毕，该markdown文件必须放在模式对应的文件夹下，例如适配器模式则为adapter目录下；
-2. 所需图片统一放到模式文件夹的images目录下,例如adapter/images，图片名的格式为模式名-分析者-图片名.jpg，例如adapter-mr.simple-flow.jpg。**如果有同名图片注意不要覆盖原图，修改自己的图片名保证不冲突即可;**
-3. 提交本地修改，将本地的提交push线上。
+请移步[Android源码设计模式分析开源项目开发版](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis)。
  
 
 ## 模式与文件夹对应列表
