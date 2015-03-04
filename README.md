@@ -30,6 +30,7 @@
 |    适配器模式  | [adapter](adapter/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
 |    观察者模式  | [observer](observer/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) | 
 |    代理模式    | [proxy](proxy/cookerwang)  | [cookerwang](https://github.com/cookerwang) |
+|    策略模式    | [strategy](strategy/gkerison)  | [GKerison](https://github.com/GKerison) |
 
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
