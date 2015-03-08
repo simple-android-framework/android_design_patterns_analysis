@@ -21,18 +21,18 @@
 
 <b id="schedule"></b>
 ## 任务表
-| 	模式名 		 | 		分类  	 | 		分析者    |
-| ------------- |:-------------:| ------------- |
-|    单例模式    |  [singleton](singleton/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
-|    Builder模式    |  [builder](builder/mr.simple)	 | [Mr.Simple](https://github.com/bboyfeiyu)
-|    外观模式    |  [facade](facade/elsdnwn)	 | [elsdnwn](https://github.com/elsdnwn)
-|    模板方法    | [template-method](template-method/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    适配器模式  | [adapter](adapter/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    观察者模式  | [observer](observer/mr.simple)  | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    代理模式    | [proxy](proxy/cookerwang)  | [cookerwang](https://github.com/cookerwang) |
-|    策略模式    | [strategy](strategy/gkerison)  | [GKerison](https://github.com/GKerison) |
-|    工厂方法模式    | [factory-method](factory-method/fatsoon)  | [fatsoon](https://github.com/fatsoon) |
-|    代理模式    | [proxy](proxy/singwhatiwanna)  | [singwhatiwanna](https://github.com/singwhatiwanna) |
+| 	模式名 		 | 		分析者    |
+| ------------- | ------------- |
+|    [单例模式](singleton/mr.simple)   	 | [Mr.Simple](https://github.com/bboyfeiyu)
+|    [Builder模式](builder/mr.simple)  	 | [Mr.Simple](https://github.com/bboyfeiyu)
+|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)
+|    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) |
+|    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) |
+|    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |
+|    [代理模式](proxy/cookerwang)       | [cookerwang](https://github.com/cookerwang) |
+|    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) |
+|    [工厂方法模式](factory-method/fatsoon)    | [fatsoon](https://github.com/fatsoon) |
+|    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |
 
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
