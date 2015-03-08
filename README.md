@@ -32,6 +32,7 @@
 |    代理模式    | [proxy](proxy/cookerwang)  | [cookerwang](https://github.com/cookerwang) |
 |    策略模式    | [strategy](strategy/gkerison)  | [GKerison](https://github.com/GKerison) |
 |    工厂方法模式    | [factory-method](factory-method/fatsoon)  | [fatsoon](https://github.com/fatsoon) |
+|    代理模式    | [proxy](proxy/singwhatiwanna)  | [singwhatiwanna](https://github.com/singwhatiwanna) |
 
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
