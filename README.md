@@ -30,7 +30,6 @@
 |    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) |
 |    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |
 |    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) |
-|    [工厂方法模式](factory-method/fatsoon)    | [fatsoon](https://github.com/fatsoon) |
 |    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |
 |    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |
 
