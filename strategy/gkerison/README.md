@@ -7,7 +7,7 @@ Android设计模式源码解析之策略模式
 ## 1. 模式介绍  
  
 ###  模式的定义
-**分离算法，选择实现**
+**策略模式定义了一系列的算法，并将每一个算法封装起来，而且使它们还可以相互替换。策略模式让算法独立于使用它的客户而独立变化。**
 
 `注：针对同一类型操作，将复杂多样的处理方式分别开来，有选择的实现各自特有的操作。`
 
@@ -206,7 +206,7 @@ UML类图
 
 * 随着策略的增加，子类也会变得繁多。
 
-## 5.附加：Android 动画实现的基本原理解析
+## 5. 附加：Android 动画实现的简单解析
 
 Android中最简单的动画就是Tween Animation了，当然帧动画和属性动画也挺方便的，但是基本原理都类似，毕竟动画的本质都是一帧一帧的展现给用户的，只不要当fps小于60的时候，人眼基本看不出间隔，也就成了所谓的流畅动画。（注：属性动画是3.0以后才有的，低版本可采用[NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)来兼容。
   
@@ -216,7 +216,7 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
 		//初始化动画开始时间
         animation.setStartTime(Animation.START_ON_FIRST_FRAME);
 		//对View设置动画
-        setAnimation(animation); //赋值到-->mCurrentAnimation
+        setAnimation(animation); 
 		//刷新父类缓存
         invalidateParentCaches();
 		//刷新View本身及子View
@@ -273,7 +273,7 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
         }
 		
 		//判断View是否需要进行缩放
- 		final Transformation t = parent.getChildTransformation();
+		final Transformation t = parent.getChildTransformation();
         boolean more = a.getTransformation(drawingTime, t, 1f);
         if (scalingRequired && mAttachInfo.mApplicationScale != 1f) {
             if (parent.mInvalidationTransformation == null) {
@@ -298,7 +298,7 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
 	}
 其中主要的操作是动画始化、动画操作、界面刷新。动画的具体实现是调用了Animation中的getTransformation(long currentTime, Transformation outTransformation,float scale)方法，该方式主要是获取缩放系数。
 
-  	public boolean getTransformation(long currentTime, Transformation outTransformation,
+	public boolean getTransformation(long currentTime, Transformation outTransformation,
             float scale) {
         mScaleFactor = scale;
         return getTransformation(currentTime, outTransformation);
@@ -390,6 +390,7 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
 							}
 		}; 
 matrix的一系列操作：
-![url](images/strategy-kerison-uml-android-animation-matrix.png)
+
+	![url](images/strategy-kerison-uml-android-animation-matrix.png)
 
 当然复杂的动画可以需要进行更多的效果计算和方式组合，例如属性动画中可以自定义View的新属性，但是本质都是一样的，就说这么多吧，还望牛人路过支点。
