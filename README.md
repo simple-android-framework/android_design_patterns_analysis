@@ -33,6 +33,8 @@
 |    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) |
 |    [工厂方法模式](factory-method/fatsoon)    | [fatsoon](https://github.com/fatsoon) |
 |    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |
+|    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
+|    [装饰模式模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
 
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
