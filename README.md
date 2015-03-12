@@ -3,7 +3,7 @@
 ## 简述
 该项目通过分析Android系统中的设计模式来提升大家对设计模式的理解，从源码的角度来剖析既增加了对Android系统本身的了解，也从优秀的设计中领悟模式的实际运用以及它适用的场景，避免在实际开发中的生搬硬套。如果你对面向对象的六大开发原则还不太熟悉，那么在学习模式之前先学习一下[面向对象的六大原则](oop-principles/oop-principles.md)是非常有必要的。
 
-**<font color="red">每一个模式可能在Android源码中有很多个实现，因此我们为每个模式创建一个文件夹，在该文件夹中建立你的用户名子目录,例如mr.simple,然后在你的文件名目录中建立一个readme.md，并且按照模板写完相关内容，参考[编写步骤](#steps)。</font>**我们的原则是通过分析这些源码不仅要学会设计模式本身，而且要通过学习该模式深入到Android源码层的实现，这样不仅学了设计模式，也增加了我们对于Android源码的了解。
+**<font color="red">每一个模式在Android源码中可能有很多个实现，因此我们为每个模式创建一个文件夹，就是为了同一个模式可以有多个人分析，这样我们就可以从更多的源码中学习对应的模式，具体请参考[编写步骤](#steps)。我们的原则是通过分析这些源码不仅要学会设计模式本身，而且要通过学习该模式深入到Android源码层的实现，这样不仅学了设计模式，也增加了我们对于Android源码的了解。</font>**
 
 **<font color="red">QQ交流群: 413864859,希望大家踊跃参与进来。</font>**
 
@@ -11,7 +11,7 @@
 ## 编写步骤
 1. 填写[任务表](#schedule);
 2. 在模式对应的文件夹下以你的用户名建立一个文件夹，例如我分析的是适配器模式，那么我在adapter目录下建立一个mr.simple文件夹；
-3. 将template.md拷贝一份到adapter/mr.simple目录下，并且修改为readme.md；
+3. 将template.md拷贝一份到adapter/mr.simple目录下，并且重命名为readme.md；
 4. 所需图片统一放到你的用户名文件夹的images目录下,例如adapter/mr.simple/images；
 5. 按照[template.md](template.md)的格式将模式分析的markdown文件编写完毕；
 6. 提交本地修改，将本地的提交push线上。
@@ -29,12 +29,12 @@
 |    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) |
 |    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) |
 |    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    [代理模式](proxy/cookerwang)       | [cookerwang](https://github.com/cookerwang) |
 |    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) |
-|    [工厂方法模式](factory-method/fatsoon)    | [fatsoon](https://github.com/fatsoon) |
 |    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |
 |    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
 |    [装饰模式模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
+|    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |
+
 
 ## 模式与文件夹对应列表
 | 模式名        | 文件夹           |
