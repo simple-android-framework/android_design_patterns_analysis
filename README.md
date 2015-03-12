@@ -35,6 +35,7 @@
 |    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
 |    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |
 |    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|
+|    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|
 
 
 ## 模式与文件夹对应列表
