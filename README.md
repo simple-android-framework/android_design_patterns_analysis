@@ -32,8 +32,9 @@
 |    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) |
 |    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |
 |    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
-|    [装饰模式模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
+|    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
 |    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |
+|    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|
 
 
 ## 模式与文件夹对应列表
