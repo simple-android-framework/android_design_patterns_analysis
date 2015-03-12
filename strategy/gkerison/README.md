@@ -165,52 +165,9 @@ UML类图
 
 
 ## Android源码中的模式实现
-日常的Android开发中经常会用到动画，而动画的多变性往往也取决于插值器Interpolator不同，我们只需要对Animation对象设置不同的Interpolator就可以实现不同的效果，这是怎么实现的呢？
+日常的Android开发中经常会用到动画，Android中最简单的动画就是Tween Animation了，当然帧动画和属性动画也挺方便的，但是基本原理都类似，毕竟动画的本质都是一帧一帧的展现给用户的，只不要当fps小于60的时候，人眼基本看不出间隔，也就成了所谓的流畅动画。（注：属性动画是3.0以后才有的，低版本可采用[NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)来兼容。而动画的d动态效果往往也取决于插值器Interpolator不同，我们只需要对Animation对象设置不同的Interpolator就可以实现不同的效果，这是怎么实现的呢？
 
-通过查看Android源码，很容易发现Android系统中在处理动画的时候经常会涉及时间的问题，也就是动画当前时间和总的动画的时长之间的关系。系统内置了很多插值器，如图：
-
-![url](images/strategy-kerison-uml-android-interpolator.png) 
-
-由于初期比较旧的版本采用的插值器是TimeInterpolator抽象，google采用了多加一层接口继承来实现兼容也不足为怪了。很显然这里的Interpolator就是处理动画时间的抽象。LinearInterpolator、CycleInterpolator等插值器就是具体的实现策略，如图：
-
-![url](images/strategy-kerison-uml-android.png) 
-
-在Animation中通过调用getTransformation方法来计算动画的实际效果，而getTransformation又是通过调用applyTransformation来应用实际的动画效果，具体代码如下：
-
-	Interpolator mInterpolator;
-	public boolean getTransformation(long currentTime, Transformation outTransformation) {
-			//计算处理当前动画的时间点...
-            final float interpolatedTime = mInterpolator.getInterpolation(normalizedTime);
-			//后续处理，以此来应用动画效果...
-            applyTransformation(interpolatedTime, outTransformation);
-	    return mMore;
-    }
-
-默认是不做任何操作，由具体的子类动画来实现操作，可见附加分析里的操作。
-
- 	protected void applyTransformation(float interpolatedTime, Transformation t) {
-	}
-
-## 4. 杂谈
-策略模式主要用来分离算法，根据相同的行为抽象来做不同的具体策略实现。
-
-通过以上也可以看出策略模式的优缺点：
-
-优点：
-
-* 结构清晰明了、使用简单直观。
-* 耦合度相对而言较低，扩展方便。
-* 操作封装也更为彻底，数据更为安全。
-
-缺点：
-
-* 随着策略的增加，子类也会变得繁多。
-
-## 5. 附加：Android 动画实现的简单解析
-
-Android中最简单的动画就是Tween Animation了，当然帧动画和属性动画也挺方便的，但是基本原理都类似，毕竟动画的本质都是一帧一帧的展现给用户的，只不要当fps小于60的时候，人眼基本看不出间隔，也就成了所谓的流畅动画。（注：属性动画是3.0以后才有的，低版本可采用[NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)来兼容。
-  
-首先要想知道动画的执行流程，还是得从View入手，因为Android中主要针对的操作对象还是View，所以我们首先到View中查找，我们找到了View.startAnimation(Animation animation)这个方法
+首先要想知道动画的执行流程，还是得从View入手，因为Android中主要针对的操作对象还是View，所以我们首先到View中查找，我们找到了View.startAnimation(Animation animation)这个方法。
 
 	public void startAnimation(Animation animation) {
 		//初始化动画开始时间
@@ -261,7 +218,7 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
 	private boolean drawAnimation(ViewGroup parent, long drawingTime,
             Animation a, boolean scalingRequired) {
 
-  		Transformation invalidationTransform;
+		Transformation invalidationTransform;
         final int flags = parent.mGroupFlags;
 		//判断动画是否已经初始化过
         final boolean initialized = a.isInitialized();
@@ -296,7 +253,8 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
 		}
 		return more;
 	}
-其中主要的操作是动画始化、动画操作、界面刷新。动画的具体实现是调用了Animation中的getTransformation(long currentTime, Transformation outTransformation,float scale)方法，该方式主要是获取缩放系数。
+
+其中主要的操作是动画始化、动画操作、界面刷新。动画的具体实现是调用了Animation中的getTransformation(long currentTime, Transformation outTransformation,float scale)方法。
 
 	public boolean getTransformation(long currentTime, Transformation outTransformation,
             float scale) {
@@ -304,17 +262,50 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
         return getTransformation(currentTime, outTransformation);
     }
 
-在上面的方法中，又调用了插值器中分析提到的方法： Animation.getTransformation(long currentTime, Transformation outTransformation)，分析至此……大致就先这样吧。
+在上面的方法中主要是获取缩放系数和调用Animation.getTransformation(long currentTime, Transformation outTransformation)来计算和应用动画效果。
+	
+	Interpolator mInterpolator;
+	public boolean getTransformation(long currentTime, Transformation outTransformation) {
+			//计算处理当前动画的时间点...
+            final float interpolatedTime = mInterpolator.getInterpolation(normalizedTime);
+			//后续处理，以此来应用动画效果...
+            applyTransformation(interpolatedTime, outTransformation);
+	    return mMore;
+    }
 
+很容易发现Android系统中在处理动画的时候会调用插值器中的getInterpolation(float input)方法来获取当前的时间点，依次来计算当前变化的情况。这就不得不说到Android中的插值器Interpolator，系统内置了很多插值器，如图：
 
+![url](images/strategy-kerison-uml-android-interpolator.png) 
+
+由于初期比较旧的版本采用的插值器是TimeInterpolator抽象，google采用了多加一层接口继承来实现兼容也不足为怪了。很显然策略模式在这里作了很好的实现，Interpolator就是处理动画时间的抽象。LinearInterpolator、CycleInterpolator等插值器就是具体的实现策略，如图：
+
+![url](images/strategy-kerison-uml-android.png) 
+
+这里以LinearInterpolator和CycleInterpolator为例：
+
+- LinearInterpolator
+	 
+		public float getInterpolation(float input) {
+	        return input;
+	    }
+
+- CycleInterpolator
+
+	  	public float getInterpolation(float input) {
+	        return (float)(Math.sin(2 * mCycles * Math.PI * input));
+	    }
+可以看出LinearInterpolator中计算当前时间的方法是做线性运算，也就是返回input*1，所以动画会成直线匀速播放出来，而CycleInterpolator是按照正弦运算，所以动画会正反方向跑一次，其它插值器依次类推，也可以通过实现Interpolator自定义插值器。
+
+在Animation中通过调用getTransformation方法来计算动画的实际效果，而getTransformation又是通过调用applyTransformation来应用实际的动画效果,applyTransformation默认是不做任何操作的，由具体的子类动画来实现操作。
+
+ 	protected void applyTransformation(float interpolatedTime, Transformation t) {
+	}
 
 最后来看一下Animation类的结构：
 
 ![url](images/strategy-kerison-uml-android-animation.png)
 
 可以看出Animation的直接父类就是Object，直接子类除了AnimationSet（多个动画组成的一组动画效果，归根结底还是动画），其他几个子类都是Android内置的简单动画类型，从上面对插值器的分析中可以看出，Animation会调用applyTransformation来应用动画时间来达到动态效果。
-
-例如：
 
 1. AlphaAnimation 主要是针对View的alpha属性根据时间做了动态调整：
 	
@@ -389,8 +380,20 @@ Android中最简单的动画就是Tween Animation了，当然帧动画和属性�
 				//t.getMatrix().set ...
 							}
 		}; 
-matrix的一系列操作：
-
-	![url](images/strategy-kerison-uml-android-animation-matrix.png)
 
 当然复杂的动画可以需要进行更多的效果计算和方式组合，例如属性动画中可以自定义View的新属性，但是本质都是一样的，就说这么多吧，还望牛人路过支点。
+
+## 4. 杂谈
+策略模式主要用来分离算法，根据相同的行为抽象来做不同的具体策略实现。
+
+通过以上也可以看出策略模式的优缺点：
+
+优点：
+
+* 结构清晰明了、使用简单直观。
+* 耦合度相对而言较低，扩展方便。
+* 操作封装也更为彻底，数据更为安全。
+
+缺点：
+
+* 随着策略的增加，子类也会变得繁多。
