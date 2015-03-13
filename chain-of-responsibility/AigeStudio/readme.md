@@ -54,6 +54,173 @@ public class SimpleResponsibility {
 ### 实现源码
 上面的场景我们可以使用使用如下的代码来模拟实现：
 
+首先定义一个程序员类：
+```Java
+/**
+ * 程序猿类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class ProgramApe {
+	private int expenses;// 声明整型成员变量表示出差费用
+	private String apply = "爹要点钱出差";// 声明字符串型成员变量表示差旅申请
+
+	/*
+	 * 含参构造方法
+	 */
+	public ProgramApe(int expenses) {
+		this.expenses = expenses;
+	}
+
+	/*
+	 * 获取程序员具体的差旅费用
+	 */
+	public int getExpenses() {
+		return expenses;
+	}
+
+	/*
+	 * 获取差旅费申请
+	 */
+	public String getApply() {
+		return apply;
+	}
+}
+```
+
+然后依次是各个大爷类：
+
+```Java
+/**
+ * 小组长类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class GroupLeader {
+
+	/**
+	 * 处理请求
+	 * 
+	 * @param ape
+	 *            具体的猿
+	 */
+	public void handleRequest(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("GroupLeader: Of course Yes!");
+	}
+}
+```
+
+```Java
+/**
+ * 项目主管类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Director {
+	/**
+	 * 处理请求
+	 * 
+	 * @param ape
+	 *            具体的猿
+	 */
+	public void handleRequest(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("Director: Of course Yes!");
+	}
+}
+```
+
+```Java
+/**
+ * 部门经理类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Manager {
+	/**
+	 * 处理请求
+	 * 
+	 * @param ape
+	 *            具体的猿
+	 */
+	public void handleRequest(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("Manager: Of course Yes!");
+	}
+}
+```
+
+```Java
+/**
+ * 老总类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Boss {
+	/**
+	 * 处理请求
+	 * 
+	 * @param ape
+	 *            具体的猿
+	 */
+	public void handleRequest(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("Boss: Of course Yes!");
+	}
+}
+```
+
+好了，万事俱备只欠场景，现在我们模拟一下整个场景过程：
+
+```Java
+/**
+ * 场景模拟类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Client {
+	public static void main(String[] args) {
+		/*
+		 * 先来一个程序猿 这里给他一个三万以内的随机值表示需要申请的差旅费
+		 */
+		ProgramApe ape = new ProgramApe((int) (Math.random() * 30000));
+
+		/*
+		 * 再来四个老大
+		 */
+		GroupLeader leader = new GroupLeader();
+		Director director = new Director();
+		Manager manager = new Manager();
+		Boss boss = new Boss();
+
+		/*
+		 * 处理申请
+		 */
+		if (ape.getExpenses() <= 1000) {
+			leader.handleRequest(ape);
+		} else if (ape.getExpenses() <= 5000) {
+			director.handleRequest(ape);
+		} else if (ape.getExpenses() <= 10000) {
+			manager.handleRequest(ape);
+		} else {
+			boss.handleRequest(ape);
+		}
+	}
+}
+```
+
+运行一下，我的结果输出如下（注：由于随机值的原因你的结果也许与我不一样）：
+
+>爹要点钱出差
+>Manager: Of course Yes!
+
 
 ### 总结
 `对上述的简单示例进行总结说明`
