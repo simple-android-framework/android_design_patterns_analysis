@@ -181,6 +181,3 @@ private class ArrayListIterator implements Iterator<E> {
 * 如果你在遍历的过程中,集合发生改变,变多变少,内容变化都是算,就会抛出来ConcurrentModificationException异常.
 
 
-### 题外话
-
-
