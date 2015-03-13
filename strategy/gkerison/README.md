@@ -31,8 +31,10 @@ Android设计模式源码解析之策略模式
 ###  简单实现的介绍
 通常如果一个问题有多个解决方案或者稍有区别的操作时，最简单的方式就是利用if-else or switch-case方式来解决，对于简单的解决方案这样做无疑是比较简单、方便、快捷的，但是如果解决方案中包括大量的处理逻辑需要封装，或者处理方式变动较大的时候则就显得混乱、复杂，而策略模式则很好的解决了这样的问题，它将各种方案分离开来，让操作者根据具体的需求来动态的选择不同的策略方案。
 这里以简单的计算操作(+、-、*、/)作为示例：
+
 ### 未使用策略模式
 
+```java
 	public static double calc(String op, double paramA, double paramB) {
 		if ("+".equals(op)) {
 			System.out.println("执行加法...");
@@ -53,6 +55,7 @@ Android设计模式源码解析之策略模式
 			throw new IllegalArgumentException("未找到计算方法!");
 		}
 	}
+```
 
 ### 使用策略模式
 UML类图
@@ -63,7 +66,8 @@ UML类图
 * AddStrategy、SubStrategy、MultiStrategy、DivStrategy : 具体的 +、-、*、/ 实现。
 
 具体实现代码如下：
- 
+
+```java 
 	//针对操作进行抽象
 	public interface Strategy {
 		public double calc(double paramA, double paramB);
@@ -136,25 +140,29 @@ UML类图
 		calc.setStrategy(strategy);
 		return calc.calc(paramA, paramB);
 	}
+```
 
 二者运行：
 
+```java
 	public static void main(String[] args) {
 		double paramA = 5;
 		double paramB = 21;
 		
-		System.out.println("执行普通模式------------------------------");
+		System.out.println("------------- 普通形式 ----------------");
 		System.out.println("加法结果是：" + calc("+", paramA, paramB));
 		System.out.println("减法结果是：" + calc("-", paramA, paramB));
 		System.out.println("乘法结果是：" + calc("*", paramA, paramB));
 		System.out.println("除法结果是：" + calc("/", paramA, paramB));
 		
-		System.out.println("执行策略模式------------------------------");
+		System.out.println("------------ 策略模式  ----------------");
 		System.out.println("加法结果是：" + calc(new AddStrategy(), paramA, paramB));
 		System.out.println("减法结果是：" + calc(new SubStrategy(), paramA, paramB));
 		System.out.println("乘法结果是：" + calc(new MultiStrategy(), paramA, paramB));
 		System.out.println("除法结果是：" + calc(new DivStrategy(), paramA, paramB));
 	}
+```
+	
 结果为：
 
 ![url](images/strategy-kerison-uml-calc-result.png)  
@@ -165,10 +173,11 @@ UML类图
 
 
 ## Android源码中的模式实现
-日常的Android开发中经常会用到动画，Android中最简单的动画就是Tween Animation了，当然帧动画和属性动画也挺方便的，但是基本原理都类似，毕竟动画的本质都是一帧一帧的展现给用户的，只不要当fps小于60的时候，人眼基本看不出间隔，也就成了所谓的流畅动画。（注：属性动画是3.0以后才有的，低版本可采用[NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)来兼容。而动画的d动态效果往往也取决于插值器Interpolator不同，我们只需要对Animation对象设置不同的Interpolator就可以实现不同的效果，这是怎么实现的呢？
+日常的Android开发中经常会用到动画，Android中最简单的动画就是Tween Animation了，当然帧动画和属性动画也挺方便的，但是基本原理都类似，毕竟动画的本质都是一帧一帧的展现给用户的，只不要当fps小于60的时候，人眼基本看不出间隔，也就成了所谓的流畅动画。（注：属性动画是3.0以后才有的，低版本可采用[NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)来兼容。而动画的动态效果往往也取决于插值器Interpolator不同，我们只需要对Animation对象设置不同的Interpolator就可以实现不同的效果，这是怎么实现的呢？
 
-首先要想知道动画的执行流程，还是得从View入手，因为Android中主要针对的操作对象还是View，所以我们首先到View中查找，我们找到了View.startAnimation(Animation animation)这个方法。
+首先要想知道动画的执行流程，还是得从View入手，因为Android中主要针对的操作对象还是View，所以我们首先到View中查找，我们找到了View.startAnimation(Animation animation)这个方法。   
 
+```
 	public void startAnimation(Animation animation) {
 		//初始化动画开始时间
         animation.setStartTime(Animation.START_ON_FIRST_FRAME);
@@ -179,15 +188,18 @@ UML类图
 		//刷新View本身及子View
         invalidate(true);
     }
-
+```
 考虑到View一般不会单独存在，都是存在于某个ViewGroup中，所以google使用动画绘制的地方选择了在ViewGroup中的drawChild(Canvas canvas, View child, long drawingTime)方法中进行调用子View的绘制。
-	
+
+```	
 	protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         return child.draw(canvas, this, drawingTime);
     }
+```
 
 再看下View中的draw(Canvas canvas, ViewGroup parent, long drawingTime)方法中是如何调用使用Animation的
 
+```
 	boolean draw(Canvas canvas, ViewGroup parent, long drawingTime) {
 		//...
 		
@@ -212,9 +224,11 @@ UML类图
 			//...
 		}
 	}
+```
 
 可以看出在父类调用View的draw方法中，会先判断是否设置了清除到需要做该表的标记，然后再获取设置的动画的信息，如果设置了动画，就会调用View中的drawAnimation方法，具体如下：
 
+```
 	private boolean drawAnimation(ViewGroup parent, long drawingTime,
             Animation a, boolean scalingRequired) {
 
@@ -253,18 +267,24 @@ UML类图
 		}
 		return more;
 	}
+```
 
 其中主要的操作是动画始化、动画操作、界面刷新。动画的具体实现是调用了Animation中的getTransformation(long currentTime, Transformation outTransformation,float scale)方法。
+
+```java
 
 	public boolean getTransformation(long currentTime, Transformation outTransformation,
             float scale) {
         mScaleFactor = scale;
         return getTransformation(currentTime, outTransformation);
     }
+```
 
 在上面的方法中主要是获取缩放系数和调用Animation.getTransformation(long currentTime, Transformation outTransformation)来计算和应用动画效果。
 	
-	Interpolator mInterpolator;
+Interpolator mInterpolator;  
+
+```
 	public boolean getTransformation(long currentTime, Transformation outTransformation) {
 			//计算处理当前动画的时间点...
             final float interpolatedTime = mInterpolator.getInterpolation(normalizedTime);
@@ -272,12 +292,13 @@ UML类图
             applyTransformation(interpolatedTime, outTransformation);
 	    return mMore;
     }
+```    
 
-很容易发现Android系统中在处理动画的时候会调用插值器中的getInterpolation(float input)方法来获取当前的时间点，依次来计算当前变化的情况。这就不得不说到Android中的插值器Interpolator，系统内置了很多插值器，如图：
+很容易发现Android系统中在处理动画的时候会调用插值器中的getInterpolation(float input)方法来获取当前的时间点，依次来计算当前变化的情况。这就不得不说到Android中的插值器Interpolator，它的作用是根据时间流逝的百分比来计算出当前属性值改变的百分比，系统预置的有LinearInterpolator（线性插值器：匀速动画）、AccelerateDecelerateInterpolator（加速减速插值器：动画两头慢中间快）和DecelerateInterpolator（减速插值器：动画越来越慢）等，如图：
 
 ![url](images/strategy-kerison-uml-android-interpolator.png) 
 
-由于初期比较旧的版本采用的插值器是TimeInterpolator抽象，google采用了多加一层接口继承来实现兼容也不足为怪了。很显然策略模式在这里作了很好的实现，Interpolator就是处理动画时间的抽象。LinearInterpolator、CycleInterpolator等插值器就是具体的实现策略，如图：
+由于初期比较旧的版本采用的插值器是TimeInterpolator抽象，google采用了多加一层接口继承来实现兼容也不足为怪了。很显然策略模式在这里作了很好的实现，Interpolator就是处理动画时间的抽象，LinearInterpolator、CycleInterpolator等插值器就是具体的实现策略。插值器与Animation的关系图如下：
 
 ![url](images/strategy-kerison-uml-android.png) 
 
@@ -293,95 +314,10 @@ UML类图
 
 	  	public float getInterpolation(float input) {
 	        return (float)(Math.sin(2 * mCycles * Math.PI * input));
-	    }
-可以看出LinearInterpolator中计算当前时间的方法是做线性运算，也就是返回input*1，所以动画会成直线匀速播放出来，而CycleInterpolator是按照正弦运算，所以动画会正反方向跑一次，其它插值器依次类推，也可以通过实现Interpolator自定义插值器。
+	    }    
+	    
+可以看出LinearInterpolator中计算当前时间的方法是做线性运算，也就是返回input*1，所以动画会成直线匀速播放出来，而CycleInterpolator是按照正弦运算，所以动画会正反方向跑一次，其它插值器依次类推。不同的插值器的计算方法都有所差别，用户设置插值器以实现动画速率的算法替换。       
 
-在Animation中通过调用getTransformation方法来计算动画的实际效果，而getTransformation又是通过调用applyTransformation来应用实际的动画效果,applyTransformation默认是不做任何操作的，由具体的子类动画来实现操作。
-
- 	protected void applyTransformation(float interpolatedTime, Transformation t) {
-	}
-
-最后来看一下Animation类的结构：
-
-![url](images/strategy-kerison-uml-android-animation.png)
-
-可以看出Animation的直接父类就是Object，直接子类除了AnimationSet（多个动画组成的一组动画效果，归根结底还是动画），其他几个子类都是Android内置的简单动画类型，从上面对插值器的分析中可以看出，Animation会调用applyTransformation来应用动画时间来达到动态效果。
-
-1. AlphaAnimation 主要是针对View的alpha属性根据时间做了动态调整：
-	
-		@Override
-	    protected void applyTransformation(float interpolatedTime, Transformation t) {
-	        final float alpha = mFromAlpha;
-	        t.setAlpha(alpha + ((mToAlpha - alpha) * interpolatedTime));
-	    }
-
-2. RotateAnimation 主要是针对View Matrix的角度值根据时间做了动态调整。
-
-		@Override
-	    protected void applyTransformation(float interpolatedTime, Transformation t) {
-	        float degrees = mFromDegrees + ((mToDegrees - mFromDegrees) * interpolatedTime);
-	        float scale = getScaleFactor();
-	        //判断是否设置旋转中心
-	        if (mPivotX == 0.0f && mPivotY == 0.0f) {
-	            t.getMatrix().setRotate(degrees);
-	        } else {
-	            t.getMatrix().setRotate(degrees, mPivotX * scale, mPivotY * scale);
-	        }
-	    }
-3. ScaleAnimation 主要是针对View Matrix的缩放值根据时间做了动态调整。
-
-		@Override
-	    protected void applyTransformation(float interpolatedTime, Transformation t) {
-	        float sx = 1.0f;
-	        float sy = 1.0f;
-	        float scale = getScaleFactor();
-			//判断X方向是否需要调整			
-	        if (mFromX != 1.0f || mToX != 1.0f) {
-	            sx = mFromX + ((mToX - mFromX) * interpolatedTime);
-	        }
-			//判断Y方向是否需要做调整
-	        if (mFromY != 1.0f || mToY != 1.0f) {
-	            sy = mFromY + ((mToY - mFromY) * interpolatedTime);
-	        }
-			//判断是否设置缩放中心
-	        if (mPivotX == 0 && mPivotY == 0) {
-	            t.getMatrix().setScale(sx, sy);
-	        } else {
-	            t.getMatrix().setScale(sx, sy, scale * mPivotX, scale * mPivotY);
-	        }
-	    }
-4. TranslatieAnimation 主要是针对View Matrix的位移值根据时间做了动态调整。
-
-	    @Override
-	    protected void applyTransformation(float interpolatedTime, Transformation t) {
-	        float dx = mFromXDelta;
-	        float dy = mFromYDelta;
-			//判断X方向是否需要调整
-	        if (mFromXDelta != mToXDelta) {
-	            dx = mFromXDelta + ((mToXDelta - mFromXDelta) * interpolatedTime);
-	        }
-			//判断Y方向是否需要做调整
-	        if (mFromYDelta != mToYDelta) {
-	            dy = mFromYDelta + ((mToYDelta - mFromYDelta) * interpolatedTime);
-	        }
-	        t.getMatrix().setTranslate(dx, dy);
-	    }
-5. 自定义一个简单的Animation，一般主要实现applyTransformation对View根据interpolatedTime做动态调整即可，稍微复杂点的可以添加额外操作。
-
-		Animation animation = new Animation() {
-			@Override
-			protected void applyTransformation(float interpolatedTime,
-					Transformation t) {
-				// TODO Auto-generated method stub
-				super.applyTransformation(interpolatedTime, t);
-				//对alpha进行操作
-				//t.setAlpha(alpha)
-				//对matrix进行操作
-				//t.getMatrix().set ...
-							}
-		}; 
-
-当然复杂的动画可以需要进行更多的效果计算和方式组合，例如属性动画中可以自定义View的新属性，但是本质都是一样的，就说这么多吧，还望牛人路过支点。
 
 ## 4. 杂谈
 策略模式主要用来分离算法，根据相同的行为抽象来做不同的具体策略实现。
