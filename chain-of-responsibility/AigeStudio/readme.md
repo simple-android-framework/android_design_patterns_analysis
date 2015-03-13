@@ -222,6 +222,87 @@ public class Client {
 >
 >Manager: Of course Yes!
 
+是不是感觉有点懂了？当然上面的代码虽然在一定程度上体现了责任链模式的思想，但是确是非常terrible的。作为一个code新手可以原谅，但是对有一定经验的code+来说就不可饶恕了，很明显所有的老大都有共同的handleRequest方法而程序猿也有不同类型的，比如一个公司的php、c/c++、Android、IOS等等，所有的这些共性我们都可以将其抽象为一个抽象类或接口，比如我们的程序猿抽象父类：
+
+```java
+/**
+ * 程序猿抽象接口
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public abstract class ProgramApes {
+	/**
+	 * 获取程序员具体的差旅费用
+	 * 
+	 * @return 要多少钱
+	 */
+	public abstract int getExpenses();
+
+	/**
+	 * 获取差旅费申请
+	 * 
+	 * @return Just a request
+	 */
+	public abstract String getApply();
+}
+```
+
+这时我们就可以实现该接口使用呆毛具现化一个具体的程序猿，比如Android猿：
+
+```java
+/**
+ * Android程序猿类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class AndroidApe extends ProgramApes {
+	private int expenses;// 声明整型成员变量表示出差费用
+	private String apply = "爹要点钱出差";// 声明字符串型成员变量表示差旅申请
+
+	/*
+	 * 含参构造方法
+	 */
+	public AndroidApe(int expenses) {
+		this.expenses = expenses;
+	}
+
+	@Override
+	public int getExpenses() {
+		return expenses;
+	}
+
+	@Override
+	public String getApply() {
+		return apply;
+	}
+}
+```
+同样的，所有的老大都有一个批复经费申请的权利，我们把这个权利抽象为一个IPower接口：
+
+```java
+/**
+ * 老大们的权利接口
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public interface IPower {
+	/**
+	 * 处理请求
+	 * 
+	 * @param ape
+	 *            具体的猿
+	 */
+	public void handleRequest(ProgramApe ape);
+}
+```
+
+然后让所有的老大们实现该接口即可其它不变，而场景类Client中也只是修改各个老大的引用类型为IPower而已，具体代码就不贴了，运行效果也类似。
+
+然而上面的代码依然问题重重，为什么呢？大家想想，当程序猿发出一个申请时却是在场景类中做出判断决定的……然而这个职责事实上应该由老大们来承担并作出决定，上面的代码搞反了……既然知道了错误，那么我们就来再次重构一下代码：
+
 
 ### 总结
 `对上述的简单示例进行总结说明`
