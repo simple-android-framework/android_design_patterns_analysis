@@ -34,7 +34,7 @@
 |    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  撒丫子赶稿中 |
 |    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  撒丫子赶稿中  |
 |    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |  撒丫子赶稿中 |
-|    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  撒丫子赶稿中 |
+|    [迭代器模式](iterator/haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  待校对 |
 |    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
 |    [工厂方法模式](factory-method/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
 |    [抽象工厂模式](abstract-factory/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
