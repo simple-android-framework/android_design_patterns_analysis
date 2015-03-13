@@ -25,7 +25,7 @@
 | ------------- | ------------- |--------------|
 |    [单例模式](singleton/mr.simple)   	 | [Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
 |    [Builder模式](builder/mr.simple)  	 | [Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
-|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)|   撒丫子赶稿中  |
+|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)、[Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
 |    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) | 完成  |
 |    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) | 完成  |
 |    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |  完成 |
