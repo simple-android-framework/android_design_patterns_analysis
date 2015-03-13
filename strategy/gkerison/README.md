@@ -177,7 +177,7 @@ UML类图
 
 首先要想知道动画的执行流程，还是得从View入手，因为Android中主要针对的操作对象还是View，所以我们首先到View中查找，我们找到了View.startAnimation(Animation animation)这个方法。   
 
-```
+```java
 	public void startAnimation(Animation animation) {
 		//初始化动画开始时间
         animation.setStartTime(Animation.START_ON_FIRST_FRAME);
@@ -191,7 +191,7 @@ UML类图
 ```
 考虑到View一般不会单独存在，都是存在于某个ViewGroup中，所以google使用动画绘制的地方选择了在ViewGroup中的drawChild(Canvas canvas, View child, long drawingTime)方法中进行调用子View的绘制。
 
-```	
+```java	
 	protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         return child.draw(canvas, this, drawingTime);
     }
@@ -199,7 +199,7 @@ UML类图
 
 再看下View中的draw(Canvas canvas, ViewGroup parent, long drawingTime)方法中是如何调用使用Animation的
 
-```
+```java
 	boolean draw(Canvas canvas, ViewGroup parent, long drawingTime) {
 		//...
 		
@@ -228,7 +228,7 @@ UML类图
 
 可以看出在父类调用View的draw方法中，会先判断是否设置了清除到需要做该表的标记，然后再获取设置的动画的信息，如果设置了动画，就会调用View中的drawAnimation方法，具体如下：
 
-```
+```java
 	private boolean drawAnimation(ViewGroup parent, long drawingTime,
             Animation a, boolean scalingRequired) {
 
@@ -284,7 +284,7 @@ UML类图
 	
 Interpolator mInterpolator;  
 
-```
+```java
 	public boolean getTransformation(long currentTime, Transformation outTransformation) {
 			//计算处理当前动画的时间点...
             final float interpolatedTime = mInterpolator.getInterpolation(normalizedTime);

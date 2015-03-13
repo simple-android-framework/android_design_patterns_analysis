@@ -33,7 +33,7 @@ Android设计模式源码解析之模板方法模式
 
 ### 实现源码
 
-```
+```java
 package com.dp.example.templatemethod;
 
 /**
@@ -159,7 +159,7 @@ public class Test {
 下面我们看源码，首先我们看执行异步任务的入口, 即execute方法 :     
 
 
-```
+```java
  public final AsyncTask<Params, Progress, Result> execute(Params... params) {
         return executeOnExecutor(sDefaultExecutor, params);
     }
@@ -194,7 +194,7 @@ public class Test {
 
 mWorker和mFuture又是什么呢？其实mWorker只是实现了Callable接口，并添加了一个参数数组字段，关于Callable和FutureTask的资料请参考[Java中的Runnable、Callable、Future、FutureTask的区别与示例](http://blog.csdn.net/bboyfeiyu/article/details/24851847)，我们挨个来分析吧，跟踪代码我们可以看到，这两个字段都是在构造函数中初始化。
 
-```
+```java
    public AsyncTask() {
         mWorker = new WorkerRunnable<Params, Result>() {
             public Result call() throws Exception {
@@ -232,7 +232,7 @@ mWorker和mFuture又是什么呢？其实mWorker只是实现了Callable接口，
 	关于AsyncTask的更详细的分析请移步[Android中AsyncTask的使用与源码分析](http://blog.csdn.net/bboyfeiyu/article/details/8973058)，我们这里只分析模板方法模式。总之，call方法会在子线程中调用，而在call方法中又调用了doInBackground方法，因此doInBackground会执行在子线程。doInBackground会返回结果，最终通过postResult投递给UI线程。
 	我们再看看postResult的实现 :     
 	
-```
+```java
     private Result postResult(Result result) {
         Message message = sHandler.obtainMessage(MESSAGE_POST_RESULT,
                 new AsyncTaskResult<Result>(this, result));
@@ -272,7 +272,7 @@ mWorker和mFuture又是什么呢？其实mWorker只是实现了Callable接口，
 可以看到，postResult就是把一个消息( msg.what == MESSAGE_POST_RESULT)发送给sHandler，sHandler类型为InternalHandler类型，当InternalHandler接到MESSAGE_POST_RESULT类型的消息时就会调用result.mTask.finish(result.mData[0])方法。我们可以看到result为AsyncTaskResult类型，源码如下  :     
    
 
-```
+```java
     @SuppressWarnings({"RawUseOfParameterizedType"})
     private static class AsyncTaskResult<Data> {
         final AsyncTask mTask;

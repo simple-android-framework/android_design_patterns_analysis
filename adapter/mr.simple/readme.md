@@ -40,7 +40,8 @@ Android设计模式源码解析之适配器(Adapter)模式
   在上述电源接口这个示例中，5V电压就是Target接口，220v电压就是Adaptee类，而将电压从220V转换到5V就是Adapter。 
   
 ### 类适配器模式
-```
+
+```java
 /**
  * Target角色
  */
@@ -69,7 +70,7 @@ public class ClassAdapter extends Volt220 implements FiveVolt {
 ```
 　　Target角色给出了需要的目标接口，而Adaptee类则是需要被转换的对象。Adapter则是将Volt220转换成Target的接口。对应的是Target的目标是要获取5V的输出电压，而Adaptee即正常输出电压是220V，此时我们就需要电源适配器类将220V的电压转换为5V电压，解决接口不兼容的问题。     
 
-```
+```java
 public class Test {
     public static void main(String[] args) {
         ClassAdapter adapter = new ClassAdapter();
@@ -86,7 +87,7 @@ public class Test {
 
 示例代码如下 : 
 
-```
+```java
 /**
  * Target角色
  */
@@ -127,7 +128,7 @@ public class ObjectAdapter implements FiveVolt {
 
 使用示例 :    
 
-```
+```java
 public class Test {
     public static void main(String[] args) {
         ClassAdapter adapter = new ClassAdapter();
@@ -152,7 +153,7 @@ public class Test {
 ## Android ListView中的Adapter模式
 在开发过程中,ListView的Adapter是我们最为常见的类型之一。一般的用法大致如下: 
 
-```
+```java
 // 代码省略
  ListView myListView = (ListView)findViewById(listview_id);
  // 设置适配器
@@ -212,7 +213,7 @@ Android的做法是增加一个Adapter层来应对变化，将ListView需要的�
 那么ListView是如何通过Adapter模式 ( 不止Adapter模式 )来运作的呢 ？我们一起来看一看。   
 ListView继承自AbsListView，Adapter定义在AbsListView中，我们看一看这个类。     
  
-```
+```java
 public abstract class AbsListView extends AdapterView<ListAdapter> implements TextWatcher,
         ViewTreeObserver.OnGlobalLayoutListener, Filter.FilterListener,
         ViewTreeObserver.OnTouchModeChangeListener,
@@ -289,7 +290,7 @@ AbsListView定义了集合视图的框架，比如Adapter模式的应用、复�
 
 ListView中的相关方法。    
 
-```
+```java
     @Override
     protected void layoutChildren() {
         // 代码省略

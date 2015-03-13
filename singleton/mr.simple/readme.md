@@ -30,7 +30,7 @@ Android设计模式源码解析之单例模式
 
 ### 实现源码
 
-```
+```java
 package com.dp.example.singleton;
 /**
  * 人的基类
@@ -132,7 +132,7 @@ public class Test {
 
 ### 单例模式的其他实现
 
-```
+```java
 package com.dp.example.singleton;
 
 public class Singleton {
@@ -225,7 +225,7 @@ public class Singleton {
 ## Android源码中的模式实现
 在Android系统中，我们经常会通过Context获取系统级别的服务，比如WindowsManagerService, ActivityManagerService等，更常用的是一个叫LayoutInflater的类。这些服务会在合适的时候以单例的形式注册在系统中，在我们需要的时候就通过Context的getSystemService(String name)获取。我们以LayoutInflater为例来说明, 平时我们使用LayoutInflater较为常见的地方是在ListView的getView方法中。 
 
-```
+```java
 @Override
 public View getView(int position, View convertView, ViewGroup parent)	
 	View itemView = null;
@@ -259,7 +259,7 @@ public View getView(int position, View convertView, ViewGroup parent)
 
 可以看到from(Context)函数内部调用的是Context类的getSystemService(String key)方法，我们跟踪到Context类看到, 该类是抽象类。
 
-```
+```java
 public abstract class Context {
     // 省略
 }
@@ -269,7 +269,7 @@ public abstract class Context {
 
 我们知道，一个Activity的入口是ActivityThread的main函数。在该main函数中创建一个新的ActivityThread对象，并且启动消息循环(UI线程)，创建新的Activity、新的Context对象，然后将该Context对象传递给Activity。下面我们看看ActivityThread源码。    
 
-```
+```java
     public static void main(String[] args) {
         SamplingProfilerIntegration.start();
 
@@ -331,7 +331,7 @@ public abstract class Context {
 
 在main方法中，我们创建一个ActivityThread对象后，调用了其attach函数，并且参数为false. 在attach函数中， 参数为false的情况下， 会通过Binder机制与ActivityManagerService通信，并且最终调用handleLaunchActivity函数 ( 具体分析请参考老罗的博客 : [Activity的启动流程](http://blog.csdn.net/luoshengyang/article/details/6689748))，我们看看该函数的实现 。     
 
-```
+```java
 
     private void handleLaunchActivity(ActivityClientRecord r, Intent customIntent) {
         // 代码省略
@@ -392,7 +392,7 @@ public abstract class Context {
 
 通过上面1~5的代码分析可以知道， Context的实现类为ComtextImpl类。我们继续跟踪到ContextImpl类。 
 
-```
+```java
 class ContextImpl extends Context {
   
     // 代码省略

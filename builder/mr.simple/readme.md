@@ -33,7 +33,7 @@ Android设计模式源码解析之Builder模式
 
 ### 实现源码
 
-```
+```java
 package com.dp.example.builder;
 
 /**
@@ -255,7 +255,7 @@ public class Test {
 ## Android源码中的模式实现
 在Android源码中，我们最常用到的Builder模式就是AlertDialog.Builder， 使用该Builder来构建复杂的AlertDialog对象。简单示例如下 : 
 
-```
+```java
     //显示基本的AlertDialog  
     private void showDialog(Context context) {  
         AlertDialog.Builder builder = new AlertDialog.Builder(context);  
@@ -289,7 +289,7 @@ public class Test {
 
 下面我们看看AlertDialog的相关源码 :
 
-```
+```java
 // AlertDialog
 public class AlertDialog extends Dialog implements DialogInterface {
     // Controller, 接受Builder成员变量P中的各个参数
@@ -399,7 +399,7 @@ public class AlertDialog extends Dialog implements DialogInterface {
 ``` 
 可以看到，通过Builder来设置AlertDialog中的title, message, button等参数， 这些参数都存储在类型为AlertController.AlertParams的成员变量P中，AlertController.AlertParams中包含了与之对应的成员变量。在调用Builder类的create函数时才创建AlertDialog, 并且将Builder成员变量P中保存的参数应用到AlertDialog的mAlert对象中，即P.apply(dialog.mAlert)代码段。我们看看apply函数的实现 : 
 
-```
+```java
         public void apply(AlertController dialog) {
             if (mCustomTitleView != null) {
                 dialog.setCustomTitle(mCustomTitleView);
