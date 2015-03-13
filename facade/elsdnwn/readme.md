@@ -2,227 +2,170 @@ Android设计模式源码解析之外观模式(Facade)
 ====================================
 > 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis) 中 外观模式 分析  
 > Android系统版本： 2.3         
-> 分析者：[elsdnwn](https://github.com/elsdnwn)，分析状态：已完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
+> 分析者：[elsdnwn](https://github.com/elsdnwn)、[Mr.Simple](https://github.com/bboyfeiyu)，分析状态：已完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
 
 
 
 ## 1. 模式介绍  
  
 ###  模式的定义
-  外观模式(Facade)，又称门面模式，为子系统中的一组接口提供一个一致的界面，此模式定义了一个高层接口，让客户端直接调用，实现了客户端和子系统中模块的解耦，让客户端更容易的使用此系统。
+外观模式(也成为门面模式)要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。它提供一个高层次的接口，使得子系统更易于使用。
 
 ### 模式的使用场景
-	1、在设计初期阶段，将不同的两个层分离；
-	2、在开发阶段，子系统往往因为不断的重构演化而变得越来越复杂，大多数的模式使用时也都会产生很多很小的类，这本是好事，但也给外部调用它们的用户程序带来了使用上的困难，增加外观Facade可以提供一个简单的接口，减少它们之间的依赖。
-	3、在维护一个遗留的大型系统时，可能这个系统已经非常难以维护和扩展了，但因为它包含非常重要的功能，新的需求开发必须依赖于它。
+1. 在设计初期阶段，将不同的两个层分离；
+2. 在开发阶段，子系统往往因为不断的重构演化而变得越来越复杂，大多数的模式使用时也都会产生很多很小的类，这本是好事，但也给外部调用它们的用户程序带来了使用上的困难，增加外观Facade可以提供一个简单的接口，减少它们之间的依赖。
+3. 在维护一个遗留的大型系统时，可能这个系统已经非常难以维护和扩展了，但因为它包含非常重要的功能，新的需求开发必须依赖于它。
 
 ## 2. UML类图
- ![url](images/facade-elsdnwn-uml.png)
+ ![url](images/facade.png)
 
 ### 角色介绍
-* CustomerA : 顾客A去超市购买所需物品。
-* CustomerB : 顾客B去超市购买所需物品。
-* Supermarket : 超市，专门销售厂商的物品，供顾客购买。
-* Towel : 毛巾类，TowelFactory:生成毛巾的厂商。
-* Vegetables : 蔬菜类，VegetablesFactory:种植蔬菜的厂商。
-* Computer : 电脑类，ComputerFactory:生产电脑的厂商。
+* Client : 客户端程序。
+* Facade : 对外的统一入口,即外观对象。
+* SubSystemA : 子系统A。
+* SubSystemB : 子系统B。
+* SubSystemC : 子系统C。
+* SubSystemD : 子系统D。
+
+## 不使用外观模式
+ ![url](images/no-facade.png)     
+如上述所说，门面模式提供一个高层次的接口，使得子系统更易于使用。因此在不使用该模式的情况下，客户端程序使用相关功能的成本就会比较的复杂，需要和各个子系统进行交互 ( 如上图 )，这样就使得系统的稳定性受到影响，用户的使用成本也相对较高。      
 
 
 ## 3. 模式的简单实现
 ###  简单实现的介绍
-外观模式比较简单，在开发过程中也经常用到，所以直接贴代码。
+电视遥控器是现实生活中一个比较好的外观模式的运用，遥控器可以控制电源的开源、声音的调整、频道的切换等。这个遥控器就是我们这里说的外观或者门面，而电源、声音、频道切换系统就是我们的子系统。遥控器统一对这些子模块的控制，我想你没有用过多个遥控器来分别控制电源开关、声音控制等功能。下面我们就来简单模拟一下这个系统。     
 
 ### 实现源码
+TvController.java   
 
 ```
-package com.elsdnwn.Facade;
+public class TvController {
+    private PowerSystem mPowerSystem = new PowerSystem();
+    private VoiceSystem mVoiceSystem = new VoiceSystem();
+    private ChannelSystem mChannelSystem = new ChannelSystem();
 
+    public void powerOn() {
+        mPowerSystem.powerOn();
+    }
+
+    public void powerOff() {
+        mPowerSystem.powerOff();
+    }
+
+    public void turnUp() {
+        mVoiceSystem.turnUp();
+    }
+
+    public void turnDown() {
+        mVoiceSystem.turnDown();
+    }
+
+    public void nextChannel() {
+        mChannelSystem.next();
+    }
+
+    public void prevChannel() {
+        mChannelSystem.prev();
+    }
+}
+```
+PowerSystem.java
+
+```java
 /**
- * @ClassName Towel
- * @Description 一个毛巾类
- * @author elsdnwn  
+ * 电源控制系统
  */
-class Towel {
-	public String toString() {
-		return "一条毛巾";
-	}
-}
+ class PowerSystem {
+    public void powerOn() {
+        System.out.println("开机");
+    }
 
+    public void powerOff() {
+        System.out.println("关机");
+    }
+}
+```
+
+VoiceSystem.java
+
+```java
 /**
- * @ClassName TowelFactory
- * @Description 生成毛巾的厂商
- * @author elsdnwn  
+ * 声音控制系统
  */
-class TowelFactory {
-	/**
-	 * 卖毛巾
-	 */
-	public Towel saleTowel() {
-		return new Towel();
-	}
+class VoiceSystem {
+    public void turnUp() {
+        System.out.println("音量增大");
+    }
+
+    public void turnDown() {
+        System.out.println("音量减小");
+    }
 }
+```
 
 
+ChannelSystem.java
 
-package com.elsdnwn.Facade;
-
+```java
 /**
- * @ClassName Vegetables
- * @Description 一个蔬菜类
- * @author elsdnwn  
+ * 频道控制系统
  */
-class Vegetables {
-	public String toString() {
-		return "一箱蔬菜";
-	}
+class ChannelSystem {
+    public void next() {
+        System.out.println("下一频道");
+    }
+
+    public void prev() {
+        System.out.println("上一频道");
+    }
 }
+```
 
-/**
- * @ClassName VegetablesFactory
- * @Description 种植蔬菜的厂商 
- * @author elsdnwn
- */
-class VegetablesFactory {
-	/**
-	 * 卖蔬菜
-	 */
-	public Vegetables saleVegetables() {
-		return new Vegetables();
-	}
-}
+测试代码 :     
 
+```java
+public class TvController {
+    private PowerSystem mPowerSystem = new PowerSystem();
+    private VoiceSystem mVoiceSystem = new VoiceSystem();
+    private ChannelSystem mChannelSystem = new ChannelSystem();
 
+    public void powerOn() {
+        mPowerSystem.powerOn();
+    }
 
-package com.elsdnwn.Facade;
+    public void powerOff() {
+        mPowerSystem.powerOff();
+    }
 
-/**
- * @ClassName Computer
- * @Description 一个电脑类
- * @author elsdnwn  
- */
-class Computer {
-	public String toString() {
-		return "一台笔记本";
-	}
-}
+    public void turnUp() {
+        mVoiceSystem.turnUp();
+    }
 
-/**
- * @ClassName ComputerFactory
- * @Description 生产电脑的厂商 
- * @author elsdnwn
- */
-class ComputerFactory {
-	/**
-	 * 卖电脑
-	 */
-	public Computer saleComputer() {
-		return new Computer();
-	}
-}
+    public void turnDown() {
+        mVoiceSystem.turnDown();
+    }
 
+    public void nextChannel() {
+        mChannelSystem.next();
+    }
 
-
-package com.elsdnwn.Facade;
-
-/**
- * @ClassName Supermarket
- * @Description 超市(沃尔玛、家乐福、丹尼斯) ，专门销售厂商的物品，供顾客购买
- * @author elsdnwn  
- */
-public class Supermarket {
-
-	/**
-	 * 超市销售毛巾
-	 */
-	public Towel saleTowel() {
-		TowelFactory mTowelFactory = new TowelFactory();
-		return mTowelFactory.saleTowel();
-	}
-
-	/**
-	 * 超市销售蔬菜
-	 */
-	public Vegetables saleVegetables() {
-		VegetablesFactory mVegetablesFactory = new VegetablesFactory();
-		return mVegetablesFactory.saleVegetables();
-	}
-
-	/**
-	 * 超市销售电脑
-	 */
-	public Computer saleComputer() {
-		ComputerFactory mComputerFactory = new ComputerFactory();
-		return mComputerFactory.saleComputer();
-	}
-}
-
-
-
-
-package com.elsdnwn.Facade;
-
-/**
- * @ClassName Test
- * @Description 顾客A来到超市购买所需物品，不需要跑到生产厂商那里，也不用管物品是怎么生产的
- * @author elsdnwn  
- */
-public class CustomerA {
-
-	public static void main(String[] args) {
-		Supermarket mSupermarketA = new Supermarket();
-		// 买毛巾
-		System.out.println("顾客A买了：" + mSupermarketA.saleTowel());
-		// 买蔬菜
-		System.out.println("顾客A买了：" + mSupermarketA.saleVegetables());
-		// 买电脑
-		System.out.println("顾客A买了：" + mSupermarketA.saleComputer());
-
-	}
-
+    public void prevChannel() {
+        mChannelSystem.prev();
+    }
 }
 
 ``` 
 
-输出结果：
+输出结果：   
 
+```
+开机
+下一频道
+音量增大
+关机
 ``` 
-顾客A买了：一条毛巾
-顾客A买了：一箱蔬菜
-顾客A买了：一台笔记本
-``` 
-
-``` 
-package com.elsdnwn.Facade;
-
-/**
- * @ClassName Test
- * @Description 顾客B来到超市购买所需物品，不需要跑到生产厂商那里，也不用管物品是怎么生产的
- * @author elsdnwn  
- */
-public class CustomerB {
-
-	public static void main(String[] args) {
-		Supermarket customerB = new Supermarket();
-		// 买毛巾
-		System.out.println("顾客B买了：" + customerB.saleTowel());
-		// 买蔬菜
-		System.out.println("顾客B买了：" + customerB.saleVegetables());
-		// 买电脑
-		System.out.println("顾客B买了：" + customerB.saleComputer());
-
-	}
-
-}
-``` 
-
-输出结果：
-
-``` 
-顾客B买了：一条毛巾
-顾客B买了：一箱蔬菜
-顾客B买了：一台笔记本
-``` 
-
+上面的TvController封装了对电源、声音、频道切换的操作，为用户提供了一个统一的接口。使得用户控制电视机更加的方便、更易于使用。        
 
 ## Android源码中的模式实现
 在Android源码中，ContextImpl这个类封装了很多模块（子系统），比如startActivity()、sendBroadcast()等，分别给用户一个统一的操作入口，简单实例如下：
