@@ -516,7 +516,110 @@ public class Client {
 OK，这样我们就将请求和处理分离开来，对于程序猿来说，不需要知道是谁给他批复的钱，而对于领导们来说，也不需要确切地知道是批给哪个程序猿，只要根据自己的责任做出处理即可，由此将两者优雅地解耦。
 
 ## Android源码中的模式实现
-`分析源码中的模式实现，列出相关源码，以及使用该模式原因等`  
+Android中关于责任链模式比较明显的体现就是在事件分发过程中对事件的投递，其实严格来说，事件投递的模式并不是严格的责任链模式，但是其是责任链模式的一种变种体现，在ViewGroup中对事件处理者的查找方式如下：
+
+```java
+@Override
+public boolean dispatchTouchEvent(MotionEvent ev) {
+    // 省略两行代码…………
+
+    boolean handled = false;
+    if (onFilterTouchEventForSecurity(ev)) {
+
+        // 省略N行代码…………
+
+        /*
+         * 如果事件未被取消并未被拦截
+         */
+        if (!canceled && !intercepted) {
+        	/*
+         	 * 如果事件为起始事件
+         	 */
+            if (actionMasked == MotionEvent.ACTION_DOWN
+                    || (split && actionMasked == MotionEvent.ACTION_POINTER_DOWN)
+                    || actionMasked == MotionEvent.ACTION_HOVER_MOVE) {
+
+                // 省掉部分逻辑…………
+
+                final int childrenCount = mChildrenCount;
+
+                /*
+         		 * 如果TouchTarget为空并且子元素不为0
+         		 */
+                if (newTouchTarget == null && childrenCount != 0) {
+                    final float x = ev.getX(actionIndex);
+                    final float y = ev.getY(actionIndex);
+
+                    final View[] children = mChildren;
+
+                    final boolean customOrder = isChildrenDrawingOrderEnabled();
+
+                   /*
+         		 	* 遍历子元素
+         		 	*/
+                    for (int i = childrenCount - 1; i >= 0; i--) {
+                        final int childIndex = customOrder ?
+                                getChildDrawingOrder(childrenCount, i) : i;
+                        final View child = children[childIndex];
+
+                       /*
+         		 		* 如果这个子元素无法接收Pointer Event或这个事件点压根就没有落在子元素的边界范围内
+         		 		*/
+                        if (!canViewReceivePointerEvents(child)
+                                || !isTransformedTouchPointInView(x, y, child, null)) {
+                            // 那么就跳出该次循环继续遍历
+                            continue;
+                        }
+
+                        // 找到Event该由哪个子元素持有
+                        newTouchTarget = getTouchTarget(child);
+
+
+                        if (newTouchTarget != null) {
+                            newTouchTarget.pointerIdBits |= idBitsToAssign;
+                            break;
+                        }
+
+                        resetCancelNextUpFlag(child);
+
+                       /*
+         		 		* 投递事件执行触摸操作
+         		 		* 如果子元素还是一个ViewGroup则递归调用重复此过程
+         		 		* 如果子元素是一个View那么则会调用View的dispatchTouchEvent并最终由onTouchEvent处理
+         		 		*/
+                        if (dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)) {
+                            mLastTouchDownTime = ev.getDownTime();
+                            mLastTouchDownIndex = childIndex;
+                            mLastTouchDownX = ev.getX();
+                            mLastTouchDownY = ev.getY();
+                            newTouchTarget = addTouchTarget(child, idBitsToAssign);
+                            alreadyDispatchedToNewTouchTarget = true;
+                            break;
+                        }
+                    }
+                }
+
+               /*
+ 		 		* 如果发现没有子元素可以持有该次事件
+ 		 		*/
+                if (newTouchTarget == null && mFirstTouchTarget != null) {
+                    newTouchTarget = mFirstTouchTarget;
+                    while (newTouchTarget.next != null) {
+                        newTouchTarget = newTouchTarget.next;
+                    }
+                    newTouchTarget.pointerIdBits |= idBitsToAssign;
+                }
+            }
+        }
+
+        // 省去不必要代码……
+    }
+
+    // 省去一行代码……
+
+    return handled;
+}
+```
 
 
  
