@@ -225,124 +225,85 @@ public class CustomerB {
 
 
 ## Android源码中的模式实现
-在Android 系统中使用的外观模式的地方比较多，可以说每个系统服务都对客户提供了一个访问该系统服务的管理门户类，用来方便访问对应的系统服务，如窗口管理服务对应的WindowManager，输入管理服务对应的InputManager，活动管理服务对应的ActivityManager等等。
-另外ContentResolver、Log、Context、ServiceManager也可以看作外观模式的采用。
+在Android源码中，ContextImpl这个类封装了很多模块（子系统），比如startActivity()、sendBroadcast()等，分别给用户一个统一的操作入口，简单实例如下：
 
-整个Android的窗口机制是基于一个叫做 WindowManager，这个接口可以添加view到屏幕，也可以从屏幕删除view。它面向的对象一端是屏幕，另一端就是View，通过WindowManager的 addView方法创建View，这样产生出来的View根据WindowManager.LayoutParams属性不同，效果也就不同了。比如创建 系统顶级窗口，实现悬浮窗口效果！WindowManager的方法很简单，基本用到的就三addView，removeView，updateViewLayout。
-简单示例如下 :
-``` 
+```
 package com.elsdnwn.Facade;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// 去掉title
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
-		Button mBtn = new Button(this);
-		mBtn.setText("我是通过WindowManager添加的按钮。");
-		mBtn.setTextSize(14.0f);
-		mBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(MainActivity.this, "我是通过WindowManager添加的按钮。", Toast.LENGTH_SHORT).show();
-			}
-		});
-
-		WindowManager mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-		WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
-		/**
-		 * 以下都是WindowManager.LayoutParams的相关属性 具体用途请参考SDK文档
-		 */
-		wmParams.type = 1;
-		wmParams.format = 1;
-		/**
-		 * 这里的flags也很关键 代码实际是wmParams.flags |= FLAG_NOT_FOCUSABLE;
-		 * 40的由来是wmParams的默认属性（32）+ FLAG_NOT_FOCUSABLE（8）
-		 */
-		wmParams.flags = 40;
-		wmParams.width = 300;
-		wmParams.height = 100;
-
-		mWindowManager.addView(mBtn, wmParams); // 创建View
-
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity2.class);
+		startActivity(intent);
 	}
+
 }
 
-``` 
+```
 
-结果： ![url](images/facade-elsdnwn-result.png)
+通过上面的代码可以看到，启动startActivity需要传递一个Context上下文对象，为什么要传递呢？下面我们看一下ContextImpl相关源码：
 
-需要注意的是：设置requestWindowFeature(Window.FEATURE_NO_TITLE)一定要在setContentView()方法之前；
+```
 
-下面我们看看WindowManager的源码：
+	@Override
+    public void startActivity(Intent intent) {
+        if ((intent.getFlags()&Intent.FLAG_ACTIVITY_NEW_TASK) == 0) {
+            throw new AndroidRuntimeException(
+                    "Calling startActivity() from outside of an Activity "
+                    + " context requires the FLAG_ACTIVITY_NEW_TASK flag."
+                    + " Is this really what you want?");
+        }
 
-``` 
-	// WindowManager Source
-	public interface WindowManager extends ViewManager {
-		
-		// 代码略...
+		// 其实是用的getInstrumentation().execStartActivity();
+        mMainThread.getInstrumentation().execStartActivity(
+            getOuterContext(), mMainThread.getApplicationThread(), null,
+            (Activity)null, intent, -1);
+    }
 
-	    /**
-	     * 获取默认显示的 Display对象
-	     */
-	    public Display getDefaultDisplay();
+```
 
-	    /**
-	     * 是removeView(View) 的一个特殊扩展
-	     * 在方法返回前能够立即调用该视图层次的View.onDetachedFromWindow() 方法。
-	     */
-	    public void removeViewImmediate(View view);
+我们可以看出启动Activity其实是用的Instrumentation()类里的getInstrumentation().execStartActivity(); 继续查看Instrumentation类里的execStartActivity()的源码：
 
-	    /**
-	     * WindowManager的LayoutParams子类内容十分丰富。其实WindowManager.java的主要内容就是由这个类定义构成。
-	     * 它的定义如下：
-	     */
-	    public static class LayoutParams extends ViewGroup.LayoutParams implements Parcelable {
+```
 
-	    	/**
-	         * 如果忽略gravity属性，那么它表示窗口的绝对X位置。 
-	         * 什么是gravity属性呢？简单地说，就是窗口如何停靠。
-	         * 当设置了 Gravity.LEFT 或 Gravity.RIGHT之后，x值就表示到特定边的距离。
-	         */
-	    	@ViewDebug.ExportedProperty
-	        public int x;
-	        
-	    	/**
-	         * 如果忽略gravity属性，那么它表示窗口的绝对Y位置。 
-	         * 什么是gravity属性呢？简单地说，就是窗口如何停靠。
-	         * 当设置了 Gravity.TOP 或 Gravity.BOTTOM之后，y值就表示到特定边的距离。
-	         */
-	        @ViewDebug.ExportedProperty
-	        public int y;
+	/**
+	 * 需要接受一个Context上下文对象来确定activity的开始
+	 */
+	public ActivityResult execStartActivity(
+            Context who, IBinder contextThread, IBinder token, Activity target,
+            Intent intent, int requestCode, Bundle options) {
+        IApplicationThread whoThread = (IApplicationThread) contextThread;
+        if (mActivityMonitors != null) {
+            synchronized (mSync) {
+                final int N = mActivityMonitors.size();
+                for (int i=0; i<N; i++) {
+                    final ActivityMonitor am = mActivityMonitors.get(i);
+                    if (am.match(who, null, intent)) {
+                        am.mHits++;
+                        if (am.isBlocking()) {
+                            return requestCode >= 0 ? am.getResult() : null;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        // 代码略...
+        return null;
+    }
 
-	        /**
-	         * 在水平/垂直上显示多少额外的空间将分配水平/垂直与这些LayoutParams相关联的view。
-	         * 如果是0，那么此view就不能被延伸。否则,这些额外的像素将被widget所均分。
-	         */
-	        @ViewDebug.ExportedProperty
-	        public float horizontalWeight;
+```
 
-	        @ViewDebug.ExportedProperty
-	        public float verticalWeight;
-	        
-	    	// 代码略...
-	    }
-	}
-``` 
+通过上面的代码可以看出启动Activity需要传递一个上下文Context才可以，通过外观模式我们不需要知道startActivity是怎么启动的，只需要传递上下文Context，这样就大大降低了客户端与子系统的耦合。
 
 
 ## 4. 杂谈
