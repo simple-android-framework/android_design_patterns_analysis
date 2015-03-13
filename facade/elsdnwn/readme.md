@@ -39,7 +39,7 @@ Android设计模式源码解析之外观模式(Facade)
 ### 实现源码
 TvController.java   
 
-```
+```java
 public class TvController {
     private PowerSystem mPowerSystem = new PowerSystem();
     private VoiceSystem mVoiceSystem = new VoiceSystem();
@@ -168,36 +168,176 @@ public class TvController {
 上面的TvController封装了对电源、声音、频道切换的操作，为用户提供了一个统一的接口。使得用户控制电视机更加的方便、更易于使用。        
 
 ## Android源码中的模式实现
-在Android源码中，ContextImpl这个类封装了很多模块（子系统），比如startActivity()、sendBroadcast()等，分别给用户一个统一的操作入口，简单实例如下：
+在开发过程中，Context是最重要的一个类型。它封装了很多重要的操作，比如startActivity()、sendBroadcast()等，几乎是开发者对应用操作的统一入口。Context是一个抽象类，它只是定义了抽象接口，真正的实现在ContextImpl类中。它就是今天我们要分析的外观类。      
+
+在应用启动时，首先会fork一个子进程，并且调用ActivityThread.main方法启动该进程。ActivityThread又会构建Application对象，然后和Activity、ContextImpl关联起来，然后再调用Activity的onCreate、onStart、onResume函数使Activity运行起来。我们看看下面的相关代码:       
 
 ```
-package com.elsdnwn.Facade;
+private final void handleLaunchActivity(ActivityClientRecord r, Intent customIntent) {
+		// 代码省略
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+        // 1、创建并且加载Activity，调用其onCreate函数
+        Activity a = performLaunchActivity(r, customIntent);
 
-public class MainActivity extends Activity {
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+        if (a != null) {
+            r.createdConfig = new Configuration(mConfiguration);
+            Bundle oldState = r.state;
+            // 2、调用Activity的onResume方法，使Activity变得可见
+            handleResumeActivity(r.token, false, r.isForward);
 
-		Intent intent = new Intent();
-		intent.setClass(this, MainActivity2.class);
-		startActivity(intent);
-	}
+        }
+    }
 
-}
 
-```
+     private final Activity performLaunchActivity(ActivityClientRecord r, Intent customIntent) {
+        // System.out.println("##### [" + System.currentTimeMillis() + "] ActivityThread.performLaunchActivity(" + r + ")");
+		// 代码省略
 
-通过上面的代码可以看到，启动startActivity需要传递一个Context上下文对象，为什么要传递呢？下面我们看一下ContextImpl相关源码：
+        Activity activity = null;
+        try {
+            java.lang.ClassLoader cl = r.packageInfo.getClassLoader();
+            // 1、创建Activity
+            activity = mInstrumentation.newActivity(
+                    cl, component.getClassName(), r.intent);
+            r.intent.setExtrasClassLoader(cl);
+            if (r.state != null) {
+                r.state.setClassLoader(cl);
+            }
+        } catch (Exception e) {
+            if (!mInstrumentation.onException(activity, e)) {
+                throw new RuntimeException(
+                    "Unable to instantiate activity " + component
+                    + ": " + e.toString(), e);
+            }
+        }
 
-```
+        try {
+            // 2、创建Application
+            Application app = r.packageInfo.makeApplication(false, mInstrumentation);
 
-	@Override
+            if (activity != null) {
+                // ***** 构建ContextImpl  ****** 
+                ContextImpl appContext = new ContextImpl();
+                appContext.init(r.packageInfo, r.token, this);
+                appContext.setOuterContext(activity);
+                // 获取Activity的title
+                CharSequence title = r.activityInfo.loadLabel(appContext.getPackageManager());
+                Configuration config = new Configuration(mConfiguration);
+            
+                 // 3、Activity与context, Application关联起来
+                activity.attach(appContext, this, getInstrumentation(), r.token,
+                        r.ident, app, r.intent, r.activityInfo, title, r.parent,
+                        r.embeddedID, r.lastNonConfigurationInstance,
+                        r.lastNonConfigurationChildInstances, config);
+				// 代码省略
+
+                // 4、回调Activity的onCreate方法
+                mInstrumentation.callActivityOnCreate(activity, r.state);
+           
+                // 代码省略
+            }
+            r.paused = true;
+
+            mActivities.put(r.token, r);
+
+        } catch (SuperNotCalledException e) {
+            throw e;
+
+        } catch (Exception e) {
+      
+        }
+
+        return activity;
+    }
+
+
+    final void handleResumeActivity(IBinder token, boolean clearHide, boolean isForward) {
+   
+        unscheduleGcIdler();
+
+        // 1、最终调用Activity的onResume方法
+        ActivityClientRecord r = performResumeActivity(token, clearHide);
+        // 代码省略
+        // 2、这里是重点，在这里使DecorView变得可见
+        if (r.window == null && !a.mFinished && willBeVisible) {
+                // 获取Window，即PhoneWindow类型
+                r.window = r.activity.getWindow();
+                // 3、获取Window的顶级视图，并且使它可见
+                View decor = r.window.getDecorView();
+                decor.setVisibility(View.INVISIBLE);
+                // 4、获取WindowManager
+                ViewManager wm = a.getWindowManager();
+                // 5、构建LayoutParams参数
+                WindowManager.LayoutParams l = r.window.getAttributes();
+                a.mDecor = decor;
+                l.type = WindowManager.LayoutParams.TYPE_BASE_APPLICATION;
+                l.softInputMode |= forwardBit;
+                if (a.mVisibleFromClient) {
+                    a.mWindowAdded = true;
+                    // 6、将DecorView添加到WindowManager中，最终的操作是通过WindowManagerService的addView来操作
+                    wm.addView(decor, l);
+                }
+            } else if (!willBeVisible) {
+                if (localLOGV) Slog.v(
+                    TAG, "Launch " + r + " mStartedActivity set");
+                r.hideForNow = true;
+            }
+            // 代码省略
+    }
+
+ public final ActivityClientRecord performResumeActivity(IBinder token,
+            boolean clearHide) {
+        ActivityClientRecord r = mActivities.get(token);
+       
+        if (r != null && !r.activity.mFinished) {
+                try {
+                // 代码省略
+                // 执行onResume
+                r.activity.performResume();
+				// 代码省略
+            } catch (Exception e) {
+   
+            }
+        }
+        return r;
+    }
+```    
+
+Activity启动之后，Android给我们提供了操作系统服务的统一入口，也就是Activity本身。这些工作并不是Activity自己实现的，而是将操作委托给Activity父类ContextThemeWrapper的mBase对象，这个对象的实现类就是ContextImpl ( 也就是performLaunchActivity方法中构建的ContextImpl )。
+
+
+```java
+class ContextImpl extends Context {
+    private final static String TAG = "ApplicationContext";
+    private final static boolean DEBUG = false;
+    private final static boolean DEBUG_ICONS = false;
+
+    private static final Object sSync = new Object();
+    private static AlarmManager sAlarmManager;
+    private static PowerManager sPowerManager;
+    private static ConnectivityManager sConnectivityManager;
+    private AudioManager mAudioManager;
+    LoadedApk mPackageInfo;
+    private Resources mResources;
+    private PackageManager mPackageManager;
+    private NotificationManager mNotificationManager = null;
+    private ActivityManager mActivityManager = null;
+    
+	// 代码省略
+    
+        @Override
+    public void sendBroadcast(Intent intent) {
+        String resolvedType = intent.resolveTypeIfNeeded(getContentResolver());
+        try {
+            ActivityManagerNative.getDefault().broadcastIntent(
+                mMainThread.getApplicationThread(), intent, resolvedType, null,
+                Activity.RESULT_OK, null, null, null, false, false);
+        } catch (RemoteException e) {
+        }
+    }
+    
+    
+        @Override
     public void startActivity(Intent intent) {
         if ((intent.getFlags()&Intent.FLAG_ACTIVITY_NEW_TASK) == 0) {
             throw new AndroidRuntimeException(
@@ -205,48 +345,43 @@ public class MainActivity extends Activity {
                     + " context requires the FLAG_ACTIVITY_NEW_TASK flag."
                     + " Is this really what you want?");
         }
-
-		// 其实是用的getInstrumentation().execStartActivity();
         mMainThread.getInstrumentation().execStartActivity(
-            getOuterContext(), mMainThread.getApplicationThread(), null,
-            (Activity)null, intent, -1);
+            getOuterContext(), mMainThread.getApplicationThread(), null, null, intent, -1);
     }
-
-```
-
-我们可以看出启动Activity其实是用的Instrumentation()类里的getInstrumentation().execStartActivity(); 继续查看Instrumentation类里的execStartActivity()的源码：
-
-```
-
-	/**
-	 * 需要接受一个Context上下文对象来确定activity的开始
-	 */
-	public ActivityResult execStartActivity(
-            Context who, IBinder contextThread, IBinder token, Activity target,
-            Intent intent, int requestCode, Bundle options) {
-        IApplicationThread whoThread = (IApplicationThread) contextThread;
-        if (mActivityMonitors != null) {
-            synchronized (mSync) {
-                final int N = mActivityMonitors.size();
-                for (int i=0; i<N; i++) {
-                    final ActivityMonitor am = mActivityMonitors.get(i);
-                    if (am.match(who, null, intent)) {
-                        am.mHits++;
-                        if (am.isBlocking()) {
-                            return requestCode >= 0 ? am.getResult() : null;
-                        }
-                        break;
-                    }
-                }
+    
+    
+        @Override
+    public ComponentName startService(Intent service) {
+        try {
+            ComponentName cn = ActivityManagerNative.getDefault().startService(
+                mMainThread.getApplicationThread(), service,
+                service.resolveTypeIfNeeded(getContentResolver()));
+            if (cn != null && cn.getPackageName().equals("!")) {
+                throw new SecurityException(
+                        "Not allowed to start service " + service
+                        + " without permission " + cn.getClassName());
             }
+            return cn;
+        } catch (RemoteException e) {
+            return null;
         }
-        // 代码略...
-        return null;
     }
-
+    
+        @Override
+    public String getPackageName() {
+        if (mPackageInfo != null) {
+            return mPackageInfo.getPackageName();
+        }
+        throw new RuntimeException("Not supported in system context");
+    }
+}
 ```
+可以看到，ContextImpl内部有很多xxxManager类的对象，也就是我们上文所说的各种子系统的角色。ContextImpl内部封装了一些系统级别的操作，有的子系统功能虽然没有实现，但是也提供了访问该子系统的接口，比如获取ActivityManager的getActivityManager方法。      
 
-通过上面的代码可以看出启动Activity需要传递一个上下文Context才可以，通过外观模式我们不需要知道startActivity是怎么启动的，只需要传递上下文Context，这样就大大降低了客户端与子系统的耦合。
+比如我们要启动一个Activity的时候，我们调用的是startActivity方法，这个功能的内部实现实际上是Instrumentation完成的。ContextImpl封装了这个功能，使得用户根本不需要知晓Instrumentation相关的信息，直接使用startActivity即可完成相应的工作。其他的子系统功能也是类似的实现，比如启动Service和发送广播内部使用的是ActivityManagerNative等。ContextImpl的结构图如下 :            
+![context](images/contextimpl.png)
+
+外观模式非常的简单，只是封装了子系统的操作，并且暴露接口让用户使用，避免了用户需要与多个子系统进行交互，降低了系统的耦合度、复杂度。        
 
 
 ## 4. 杂谈
