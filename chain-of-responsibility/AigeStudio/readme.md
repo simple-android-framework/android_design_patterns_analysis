@@ -219,6 +219,7 @@ public class Client {
 运行一下，我的结果输出如下（注：由于随机值的原因你的结果也许与我不一样）：
 
 >爹要点钱出差
+>
 >Manager: Of course Yes!
 
 
