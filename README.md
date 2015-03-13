@@ -25,17 +25,19 @@
 | ------------- | ------------- |--------------|
 |    [单例模式](singleton/mr.simple)   	 | [Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
 |    [Builder模式](builder/mr.simple)  	 | [Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
-|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)|   未完成  |
+|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)|   撒丫子赶稿中  |
 |    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) | 完成  |
 |    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) | 完成  |
 |    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |  完成 |
 |    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) | 完成 |
 |    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |  完成  |
-|    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  未完成 |
-|    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  未完成  |
-|    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |  未完成 |
-|    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  未完成 |
+|    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  撒丫子赶稿中 |
+|    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  撒丫子赶稿中  |
+|    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |  撒丫子赶稿中 |
+|    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  撒丫子赶稿中 |
 |    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
+|    [状态模式](state/Thinan) | [Thinan](https://www.github.com/Thinan))|  撒丫子赶稿中  |
+
 
 
 ## 目前无人认领的模式
