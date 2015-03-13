@@ -282,9 +282,8 @@ UML类图
 
 在上面的方法中主要是获取缩放系数和调用Animation.getTransformation(long currentTime, Transformation outTransformation)来计算和应用动画效果。
 	
-Interpolator mInterpolator;  
-
 ```java
+	Interpolator mInterpolator;  //成员变量
 	public boolean getTransformation(long currentTime, Transformation outTransformation) {
 			//计算处理当前动画的时间点...
             final float interpolatedTime = mInterpolator.getInterpolation(normalizedTime);
