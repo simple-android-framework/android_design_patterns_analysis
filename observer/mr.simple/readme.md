@@ -41,7 +41,7 @@ Android设计模式源码解析之观察者模式
 ![android-weekly](images/subscriber.png)
 ### 实现源码
 
-```
+```java
 /**
  * 程序员是观察者
  * 
@@ -127,7 +127,7 @@ ListView是Android中最重要的控件，没有之一。而ListView最重要的
 
 第一步我们就跟进这个方法notifyDataSetChanged方法，这个方法定义在BaseAdapter中，代码如下: 
 
-```
+```java
 public abstract class BaseAdapter implements ListAdapter, SpinnerAdapter {
 	// 数据集观察者
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
@@ -159,7 +159,7 @@ public abstract class BaseAdapter implements ListAdapter, SpinnerAdapter {
 
 我们先跟到mDataSetObservable.notifyChanged()函数中看看。     
 
-```
+```java
 /**
  * A specialization of Observable for DataSetObserver that provides methods for
  * invoking the various callback methods of DataSetObserver.
@@ -184,7 +184,7 @@ public class DataSetObservable extends Observable<DataSetObserver> {
  
 那么这些观察者是从哪里来的呢？首先ListView通过setAdapter方法来设置Adapter,我们看看相关代码。     
 
-```
+```java
     @Override
     public void setAdapter(ListAdapter adapter) {
     	// 如果已经有了一个adapter,那么先注销该Adapter对应的观察者
@@ -217,7 +217,7 @@ public class DataSetObservable extends Observable<DataSetObserver> {
 ```
 可以看到在设置Adapter时会构建一个AdapterDataSetObserver，这不就是我们上面所说的观察者么，最后将这个观察者注册到adapter中，这样我们的被观察者、观察者都有了。一般来说我们的数据集会放到Adapter中，例如 :     
 
-```
+```java
 public abstract class UserAdapter extends BaseAdapter {
 	// 数据集
     protected List<String> mDataSet = new LinkedList<String>();
@@ -233,7 +233,7 @@ public abstract class UserAdapter extends BaseAdapter {
  
 AdapterDataSetObserver定义在ListView的父类AbsListView中，代码如下 :    
 
-```
+```java
     class AdapterDataSetObserver extends AdapterView<ListAdapter>.AdapterDataSetObserver {
         @Override
         public void onChanged() {
@@ -254,7 +254,7 @@ AdapterDataSetObserver定义在ListView的父类AbsListView中，代码如下 :
 ```     
 它由继承自AbsListView的父类AdapterView<T>的AdapterDataSetObserver, 代码如下 : 
 
-```
+```java
     class AdapterDataSetObserver extends DataSetObserver {
 
         private Parcelable mInstanceState = null;
