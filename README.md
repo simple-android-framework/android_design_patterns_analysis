@@ -20,22 +20,22 @@
 
 
 <b id="schedule"></b>
-## 任务表
-| 	模式名 		 | 		分析者    |
-| ------------- | ------------- |
-|    [单例模式](singleton/mr.simple)   	 | [Mr.Simple](https://github.com/bboyfeiyu)
-|    [Builder模式](builder/mr.simple)  	 | [Mr.Simple](https://github.com/bboyfeiyu)
-|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)
-|    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |
-|    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) |
-|    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |
-|    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
-|    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |
-|    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |
-|    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|
-|    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|
+## 任务表 ( 一期截止 2015.3.20 )
+| 	模式名 		 | 		分析者    |     状态      |
+| ------------- | ------------- |--------------|
+|    [单例模式](singleton/mr.simple)   	 | [Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
+|    [Builder模式](builder/mr.simple)  	 | [Mr.Simple](https://github.com/bboyfeiyu)|   完成  |
+|    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)|   未完成  |
+|    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) | 完成  |
+|    [适配器模式](adapter/mr.simple)     | [Mr.Simple](https://github.com/bboyfeiyu) | 完成  |
+|    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |  完成 |
+|    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) | 完成 |
+|    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |  完成  |
+|    [组合模式](composite/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  未完成 |
+|    [装饰模式](decorator/tiny-times)   | [tiny-times](https://github.com/tiny-times) |  未完成  |
+|    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |  未完成 |
+|    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  未完成 |
+|    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
 
 
 ## 模式与文件夹对应列表
