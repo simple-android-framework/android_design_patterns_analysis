@@ -2,7 +2,7 @@ Android设计模式源码解析之责任链模式
 ====================================
 > 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis) 中责任链模式分析  
 > Android系统版本： 4.4.4        
-> 分析者：[Aige](https://github.com/AigeStudio)，分析状态：完成，校对者：[SM哥](https://github.com/bboyfeiyu)，校对状态：未开始   
+> 分析者：[Aige](https://github.com/AigeStudio)，分析状态：完成，校对者：[SM哥](https://github.com/bboyfeiyu)，校对状态：撒丫校对中  
  
 ## 1. 模式介绍  
  
@@ -15,10 +15,14 @@ Android设计模式源码解析之责任链模式
  
 
 ## 2. UML类图
-制作中
+![UML](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis/blob/master/chain-of-responsibility/AigeStudio/images/chain-of-responsibility.jpg?raw=true)
 
 ### 角色介绍
-你猜
+Client：客户端
+
+Handler：抽象处理者
+
+ConcreteHandler：具体处理者
 
 
 
@@ -303,12 +307,213 @@ public interface IPower {
 
 然而上面的代码依然问题重重，为什么呢？大家想想，当程序猿发出一个申请时却是在场景类中做出判断决定的……然而这个职责事实上应该由老大们来承担并作出决定，上面的代码搞反了……既然知道了错误，那么我们就来再次重构一下代码：
 
+把所有老大抽象为一个leader抽象类，在该抽象类中实现处理逻辑：
+
+```java
+/**
+ * 领导人抽象类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public abstract class Leader {
+	private int expenses;// 当前领导能批复的金额
+	private Leader mSuperiorLeader;// 上级领导
+
+	/**
+	 * 含参构造方法
+	 * 
+	 * @param expenses
+	 *            当前领导能批复的金额
+	 */
+	public Leader(int expenses) {
+		this.expenses = expenses;
+	}
+
+	/**
+	 * 回应程序猿
+	 * 
+	 * @param ape
+	 *            具体的程序猿
+	 */
+	protected abstract void reply(ProgramApe ape);
+
+	/**
+	 * 处理请求
+	 * 
+	 * @param ape
+	 *            具体的程序猿
+	 */
+	public void handleRequest(ProgramApe ape) {
+		/*
+		 * 如果说程序猿申请的money在当前领导的批复范围内
+		 */
+		if (ape.getExpenses() <= expenses) {
+			// 那么就由当前领导批复即可
+			reply(ape);
+		} else {
+			/*
+			 * 否则看看当前领导有木有上级
+			 */
+			if (null != mSuperiorLeader) {
+				// 有的话简单撒直接扔给上级处理即可
+				mSuperiorLeader.handleRequest(ape);
+			} else {
+				// 没有上级的话就批复不了老……不过在这个场景中总会有领导批复的淡定
+				System.out.println("Goodbye my money......");
+			}
+		}
+	}
+
+	/**
+	 * 为当前领导设置一个上级领导
+	 * 
+	 * @param superiorLeader
+	 *            上级领导
+	 */
+	public void setLeader(Leader superiorLeader) {
+		this.mSuperiorLeader = superiorLeader;
+	}
+}
+```
+
+这么一来，我们的领导老大们就有了实实在在的权利职责去处理底层苦逼程序猿的请求。OK，接下来要做的事就是让所有的领导继承该类：
+
+```Java
+/**
+ * 小组长类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class GroupLeader extends Leader {
+
+	public GroupLeader() {
+		super(1000);
+	}
+
+	@Override
+	protected void reply(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("GroupLeader: Of course Yes!");
+	}
+}
+```
+
+```java
+/**
+ * 项目主管类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Director extends Leader{
+	public Director() {
+		super(5000);
+	}
+
+	@Override
+	protected void reply(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("Director: Of course Yes!");		
+	}
+}
+```
+
+```java
+/**
+ * 部门经理类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Manager extends Leader {
+	public Manager() {
+		super(10000);
+	}
+
+	@Override
+	protected void reply(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("Manager: Of course Yes!");
+	}
+}
+```
+
+```java
+/**
+ * 老总类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Boss extends Leader {
+	public Boss() {
+		super(40000);
+	}
+
+	@Override
+	protected void reply(ProgramApe ape) {
+		System.out.println(ape.getApply());
+		System.out.println("Boss: Of course Yes!");
+	}
+}
+```
+
+最后，更新我们的场景类，将其从责任人的角色中解放出来：
+
+```java
+/**
+ * 场景模拟类
+ * 
+ * @author Aige{@link https://github.com/AigeStudio}
+ *
+ */
+public class Client {
+	public static void main(String[] args) {
+		/*
+		 * 先来一个程序猿 这里给他一个三万以内的随机值表示需要申请的差旅费
+		 */
+		ProgramApe ape = new ProgramApe((int) (Math.random() * 30000));
+
+		/*
+		 * 再来四个老大
+		 */
+		Leader leader = new GroupLeader();
+		Leader director = new Director();
+		Leader manager = new Manager();
+		Leader boss = new Boss();
+
+		/*
+		 * 设置老大的上一个老大
+		 */
+		leader.setLeader(director);
+		director.setLeader(manager);
+		manager.setLeader(boss);
+
+		// 处理申请
+		leader.handleRequest(ape);
+	}
+}
+```
+
+运行三次，下面是三次运行的结果（注：由于随机值的原因你的结果也许与我不一样）：
+
+>爹要点钱出差
+>
+>Boss: Of course Yes!
+***
+>爹要点钱出差
+>
+>Director: Of course Yes!
+***
+>爹要点钱出差
+>
+>Boss: Of course Yes!
 
 ### 总结
-`对上述的简单示例进行总结说明`
 
-  
-
+OK，这样我们就将请求和处理分离开来，对于程序猿来说，不需要知道是谁给他批复的钱，而对于领导们来说，也不需要确切地知道是批给哪个程序猿，只要根据自己的责任做出处理即可，由此将两者优雅地解耦。
 
 ## Android源码中的模式实现
 `分析源码中的模式实现，列出相关源码，以及使用该模式原因等`  
