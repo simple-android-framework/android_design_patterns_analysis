@@ -36,15 +36,15 @@
 |    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |  撒丫子赶稿中 |
 |    [迭代器模式](iterator/Haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  撒丫子赶稿中 |
 |    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
-|    [状态模式](state/Thinan) | [Thinan](https://www.github.com/Thinan))|  撒丫子赶稿中  |
+|    [状态模式](state/Thinan) | [Thinan](https://www.github.com/Thinan)|  撒丫子赶稿中  |
+|    [工厂方法模式](factory-method/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
+|    [抽象工厂模式](abstract-factory/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
 
 
 
 ## 目前无人认领的模式
 | 模式名        | 
 | ------------- |
-| 工厂方法模式 |
-| 抽象工厂模式 |
 | 桥接模式    |
 | 中介者模式 |
 | 备忘录模式 |
