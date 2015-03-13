@@ -10,46 +10,25 @@ Android设计模式源码解析之迭代器(Iterator)模式
 ### 模式的定义
 迭代器（Iterator）模式，又叫做游标（Cursor）模式。GOF给出的定义为：提供一种方法访问一个容器（container）对象中各个元素，而又不需暴露该对象的内部细节。
 
-### 使用场景
-　　面向对象设计原则中的单一职责原则，对于不同的功能,我们要尽可能的把这个功能分解出单一的职责，不同的类去承担不同的职责。Iterator模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样不暴露集合的内部结构，又可让外部代码透明的访问集合内部的数据。
+### 模式的使用场景
 　　Java JDK 1.2 版开始支持迭代器。每一个迭代器提供next()以及hasNext()方法，同时也支持remove()(1.8的时候remove已经成为default throw new UnsupportedOperationException("remove"))。对Android来说,集合Collection实现了Iterable接口,就是说,无论是List的一大家子还是Map的一大家子,我们都可以使用Iterator来遍历里面的元素,[可以使用Iterator的集合](http://docs.oracle.com/javase/8/docs/api/java/util/package-tree.html)      
 
 ## 2. UML类图
 　　　
-　![iterator_2.png](iterator_2.jpg)   
+　![iterator](images/Iterator_UML_class_diagram.svg.png)   
 
 ### 角色介绍　　 
-*  hasNext:用来判断集合中是否存在未被遍历到的元素
-*  remove:移除元素
-*  next:将游标(位置)移动到下一个位置
+* 迭代器接口Iterator：该接口必须定义实现迭代功能的最小定义方法集比如提供hasNext()和next()方法。
+* 迭代器实现类：迭代器接口Iterator的实现类。可以根据具体情况加以实现。
+* 容器接口：定义基本功能以及提供类似Iterator iterator()的方法。
+* 容器实现类：容器接口的实现类。必须实现Iterator iterator()方法。
 
 
 ## 3. 模式的简单实现
+###  简单实现的介绍
+我们有一个数组,对其遍历的过程我们希望使用者像ArrayList一样的使用,我们就可以用过iterator来实现.
 
-下面直接写出几种集合的遍历方式
-  
-### HashMap的遍历
-```
-HashMap<String, String> colorMap=new HashMap<>();
-colorMap.put("Color1","Red");
-colorMap.put("Color2","Blue");
-Iterator iterator = colorMap.keySet().iterator();
-while( iterator. hasNext() ){
-    String key = (String) iterator.next();
-    String value = colorMap.get(key);
-}
-```       
-### JSONObject的遍历
-```
-String paramString = "{menu:{\"1\":\"sql\", \"2\":\"android\", \"3\":\"mvc\"}}";
-JSONObject menuJSONObj  = new JSONObject(paramString);
-JSONObject  menuObj = menuJSONObj.getJSONObject("menu");
-Iterator iter = menuObj.keys();
-while(iter.hasNext()){
-    String key = (String)iter.next();
-    String value = menuObj.getString(key);
-}
-```  
+### 实现源码 
 下面我们自己实现一个Iterator的集合
 
 ```
@@ -106,7 +85,32 @@ while (iterator.hasNext()){
     Log.e("mileage",mileage.toString());
 }
 ```
-### 原理分析
+
+下面直接写出几种集合的遍历方式,大家可以对比一下
+  
+*  HashMap的遍历
+```
+HashMap<String, String> colorMap=new HashMap<>();
+colorMap.put("Color1","Red");
+colorMap.put("Color2","Blue");
+Iterator iterator = colorMap.keySet().iterator();
+while( iterator. hasNext() ){
+    String key = (String) iterator.next();
+    String value = colorMap.get(key);
+}
+```       
+* JSONObject的遍历
+```
+String paramString = "{menu:{\"1\":\"sql\", \"2\":\"android\", \"3\":\"mvc\"}}";
+JSONObject menuJSONObj  = new JSONObject(paramString);
+JSONObject  menuObj = menuJSONObj.getJSONObject("menu");
+Iterator iter = menuObj.keys();
+while(iter.hasNext()){
+    String key = (String)iter.next();
+    String value = menuObj.getString(key);
+}
+``` 
+## Android源码中的模式实现
 一个集合想要实现Iterator很是很简单的,需要注意的是每次需要重新生成一个Iterator来进行遍历.且遍历过程是单方向的,HashMap是通过一个类似HashIterator来实现的,我们为了解释简单,这里只是研究ArrayList(此处以Android L源码为例,其他版本略有不同)
 
 ```
@@ -164,6 +168,19 @@ private class ArrayListIterator implements Iterator<E> {
 * next,第一次调用的时候返回array[0]的元素,这个过程中removalIndex会被设置成当前array的index
 * remove的实现是直接操作的内存中的数据,是能够直接删掉元素的,不展开了
 
+
+
+## 4. 杂谈
+### 优点与缺点
+#### 优点  
+* 面向对象设计原则中的单一职责原则，对于不同的功能,我们要尽可能的把这个功能分解出单一的职责，不同的类去承担不同的职责。Iterator模式就是分离了集合对象的遍历行为，抽象出一个迭代器类来负责，这样不暴露集合的内部结构，又可让外部代码透明的访问集合内部的数据。
+
+#### 缺点 
+* 会产生多余的对象，消耗内存；
+* 遍历过程是一个单向且不可逆的遍历
+* 如果你在遍历的过程中,集合发生改变,变多变少,内容变化都是算,就会抛出来ConcurrentModificationException异常.
+
+
 ### 题外话
-如果你想写一个集合的数据结构的话,通过实现Iterator来操作集合,这样能够降低学习成本,因为你让外部代码透明的访问集合内部的数据.当然在前面的例子中,你也见到了ConcurrentModificationException这个Exception,如果你在遍历的过程中,集合发生改变,变多变少,内容变化都是算,就会抛出来这个异常.
+
 
