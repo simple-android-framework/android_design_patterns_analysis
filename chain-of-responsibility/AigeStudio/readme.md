@@ -621,6 +621,109 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
 }
 ```
 
+再来看看dispatchTransformedTouchEvent方法是如何调度子元素dispatchTouchEvent方法的：
+
+```java
+private boolean dispatchTransformedTouchEvent(MotionEvent event, boolean cancel,
+        View child, int desiredPointerIdBits) {
+    final boolean handled;
+
+    final int oldAction = event.getAction();
+
+    /*
+     * 如果事件被取消
+     */
+    if (cancel || oldAction == MotionEvent.ACTION_CANCEL) {
+        event.setAction(MotionEvent.ACTION_CANCEL);
+
+       /*
+     	* 如果没有子元素
+     	*/
+        if (child == null) {
+        	// 那么就直接调用父类的dispatchTouchEvent注意这里的父类终会为View类
+            handled = super.dispatchTouchEvent(event);
+        } else {
+        	// 如果有子元素则传递cancle事件
+            handled = child.dispatchTouchEvent(event);
+        }
+        event.setAction(oldAction);
+        return handled;
+    }
+
+    /*
+     * 计算即将被传递的点的数量
+     */
+    final int oldPointerIdBits = event.getPointerIdBits();
+    final int newPointerIdBits = oldPointerIdBits & desiredPointerIdBits;
+
+    /*
+     * 如果事件木有相应的点那么就丢弃该次事件
+     */
+    if (newPointerIdBits == 0) {
+        return false;
+    }
+
+    // 声明临时变量保存坐标转换后的MotionEvent
+    final MotionEvent transformedEvent;
+
+    /*
+     * 如果事件点的数量一致
+     */
+    if (newPointerIdBits == oldPointerIdBits) {
+        /*
+    	 * 子元素为空或子元素有一个单位矩阵
+    	 */
+        if (child == null || child.hasIdentityMatrix()) {
+            /*
+    		 * 再次区分子元素为空的情况
+    		 */
+            if (child == null) {
+            	// 为空则调用父类dispatchTouchEvent
+                handled = super.dispatchTouchEvent(event);
+            } else {
+            	// 否则尝试获取xy方向上的偏移量（如果通过scrollTo或scrollBy对子视图进行滚动的话）
+                final float offsetX = mScrollX - child.mLeft;
+                final float offsetY = mScrollY - child.mTop;
+
+                // 将MotionEvent进行坐标变换
+                event.offsetLocation(offsetX, offsetY);
+
+                // 再将变换后的MotionEvent传递给子元素
+                handled = child.dispatchTouchEvent(event);
+
+                // 复位MotionEvent以便之后再次使用
+                event.offsetLocation(-offsetX, -offsetY);
+            }
+
+            // 如果通过以上的逻辑判断当前事件被持有则可以直接返回
+            return handled;
+        }
+        transformedEvent = MotionEvent.obtain(event);
+    } else {
+        transformedEvent = event.split(newPointerIdBits);
+    }
+
+    /*
+     * 下述雷同不再累赘
+     */
+    if (child == null) {
+        handled = super.dispatchTouchEvent(transformedEvent);
+    } else {
+        final float offsetX = mScrollX - child.mLeft;
+        final float offsetY = mScrollY - child.mTop;
+        transformedEvent.offsetLocation(offsetX, offsetY);
+        if (! child.hasIdentityMatrix()) {
+            transformedEvent.transform(child.getInverseMatrix());
+        }
+
+        handled = child.dispatchTouchEvent(transformedEvent);
+    }
+
+    transformedEvent.recycle();
+    return handled;
+}
+```
+
 ViewGroup事件投递的递归调用就类似于一条责任链，一旦其寻找到责任者，那么将由责任者持有并消费掉该次事件，具体的体现在View的onTouchEvent方法中返回值的设置（这里介于篇幅就不具体介绍ViewGroup对事件的处理了），如果onTouchEvent返回false那么意味着当前View不会是该次事件的责任人将不会对其持有，如果为true则相反，此时View会持有该事件并不再向外传递。
 
 ## 4. 杂谈
