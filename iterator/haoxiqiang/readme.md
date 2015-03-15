@@ -109,7 +109,9 @@ while(iter.hasNext()){
     String key = (String)iter.next();
     String value = menuObj.getString(key);
 }
-``` 
+```      
+就目前而言，各种高级语言都有对迭代器的基本实现，没必要自己实现迭代器，使用内置的迭代器即可满足日常需求。         
+
 ## Android源码中的模式实现
 一个集合想要实现Iterator很是很简单的,需要注意的是每次需要重新生成一个Iterator来进行遍历.且遍历过程是单方向的,HashMap是通过一个类似HashIterator来实现的,我们为了解释简单,这里只是研究ArrayList(此处以Android L源码为例,其他版本略有不同)
 
