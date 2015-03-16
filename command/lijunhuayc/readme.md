@@ -21,7 +21,8 @@ Android设计模式源码解析之命令模式
 4.系统需要将一组操作组合在一起，即支持宏命令。
 
 ## 2. UML类图
-![url](images/lijunhuayc_uml.png) 
+![UML类图](images/lijunhuayc_uml.png) 
+
 
 ### 角色介绍
 *命令角色（Command）：定义命令的接口，声明具体命令类需要执行的方法。这是一个抽象角色。
@@ -310,7 +311,7 @@ Android设计模式源码解析之命令模式
 ```
 
 输出结果如下：
-    ![result](images/lijunhuayc_result.png)
+    ![运行结果图](images/lijunhuayc_result.png)
 
 ### 总结
     *每一个命令都是一个操作：请求的一方发出请求，要求执行一个操作；接收的一方收到请求，并执行操作。
