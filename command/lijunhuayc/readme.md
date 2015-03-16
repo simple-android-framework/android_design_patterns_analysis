@@ -2,7 +2,7 @@ Android设计模式源码解析之命令模式
 ====================================
 > 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis) 中 命令模式 分析  
 > Android系统版本： 2.3        
-> 分析者：[lijunhuayc](https://github.com/lijunhuayc)，分析状态：未完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
+> 分析者：[lijunhuayc](https://github.com/lijunhuayc)，分析状态：完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
 
 ## 1. 模式介绍  
  
