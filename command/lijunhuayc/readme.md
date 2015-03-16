@@ -33,7 +33,8 @@ Android设计模式源码解析之命令模式
 ## 3. 模式的简单实现
 ###  简单实现的介绍
 命令模式其实就是对命令进行封装，将命令请求者和命令执行者的责任分离开来实现松耦合。
-`阐述一下你的示例要实现的功能`    
+这里我们通过一个简单的实例来剖析一下命令模式：命令接收者ReceiverRole拥有一个PeopleBean类型成员，通过Invoker发出不同的命令来修改PeopleBean的相对应的属性，具体命令实现类ConcreteCommandImpl1执行修改年龄命令，ConcreteCommandImpl2执行修改姓名的命令等等，ClientRole负责组装各个部分。
+例子代码如下（resource目录下也可以查看）。
 
 ### 实现源码
 
@@ -337,13 +338,6 @@ public class Thread implements Runnable {
     Runnable target;
     private static int count = 0;
     
-        /**
-     * Starts the new Thread of execution. The <code>run()</code> method of
-     * the receiver will be called by the receiver Thread itself (and not the
-     * Thread calling <code>start()</code>).
-     * @throws IllegalThreadStateException if the Thread has been started before
-     * @see Thread#run
-     */
     public synchronized void start() {
         if (hasBeenStarted) {
             throw new IllegalThreadStateException("Thread already started."); // TODO Externalize?
@@ -397,10 +391,6 @@ bool dvmCreateInterpThread(Object* threadObj, int reqStackSize){
     
 }
 
-/*
- * Alloc and initialize a Thread struct.
- * Does not create any objects, just stuff on the system (malloc) heap.
- */
 static Thread* allocThread(int interpStackSize)
 {
     Thread* thread;
@@ -416,17 +406,13 @@ static Thread* allocThread(int interpStackSize)
 接下来在12行通过pthread_create创建pthread线程，并让这个线程start，这样就会进入该线程的thread entry运行，下来我们来看新线程的thread entry方法 interpThreadStart，同样只列出关键的地方：
 
 ```
-/*
- * pthread entry function for threads started from interpreted code.
- */
+//pthread entry function for threads started from interpreted code.
 static void* interpThreadStart(void* arg){
     Thread* self = (Thread*) arg;
     std::string threadName(dvmGetThreadName(self));
     setThreadName(threadName.c_str());
 
-    /*
-     * Finish initializing the Thread struct.
-     */
+    //Finish initializing the Thread struct.
     dvmLockThreadList(self);
     prepareThread(self);
 
@@ -440,38 +426,24 @@ static void* interpThreadStart(void* arg){
      */
     self->jniEnv = dvmCreateJNIEnv(self);
 
-    /*
-     * Change our state so the GC will wait for us from now on.  If a GC is
-     * in progress this call will suspend us.
-     */
+    //修改状态为THREAD_RUNNING
     dvmChangeStatus(self, THREAD_RUNNING);
     
-    /*
-     * Execute the "run" method.
-     * At this point our stack is empty, so somebody who comes looking for
-     * stack traces right now won't have much to look at.  This is normal.
-     */
+    //执行run方法
     Method* run = self->threadObj->clazz->vtable[gDvm.voffJavaLangThread_run];
+
     JValue unused;
     ALOGV("threadid=%d: calling run()", self->threadId);
     assert(strcmp(run->name, "run") == 0);
     dvmCallMethod(self, run, self->threadObj, &unused);
     ALOGV("threadid=%d: exiting", self->threadId);
-    /*
-     * Remove the thread from various lists, report its death, and free
-     * its resources.
-     */
+    
+    //移出线程并释放资源
     dvmDetachCurrentThread();
     return NULL;
 }
 
-/*
- * Finish initialization of a Thread struct.
- * This must be called while executing in the new thread, but before the
- * thread is added to the thread list.
- * NOTE: The threadListLock must be held by the caller (needed for
- * assignThreadId()).
- */
+//Finish initialization of a Thread struct.
 static bool prepareThread(Thread* thread){
     assignThreadId(thread);
     thread->handle = pthread_self();
@@ -479,9 +451,8 @@ static bool prepareThread(Thread* thread){
     setThreadSelf(thread);
     return true;
 }
-/*
- * Explore our sense of self.  Stuffs the thread pointer into TLS.
- */
+
+//Explore our sense of self.  Stuffs the thread pointer into TLS.
 static void setThreadSelf(Thread* thread){
     int cc;
     cc = pthread_setspecific(gDvm.pthreadKeySelf, thread);

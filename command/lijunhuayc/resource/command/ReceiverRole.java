@@ -23,10 +23,17 @@ public class ReceiverRole {
 	 * @author (ljh) @date 2015-3-16 上午11:07:32  
 	 * @return void
 	 */
-	public void opAction(int age, String name) {
-		peopleCache = people.clone();//缓存people
-		people.update(age, name);
-		System.out.println("执行命令后："+people.toString());
+	//修改年龄
+	public void opActionUpdateAge(int age) {
+		System.out.println("执行命令前："+people.toString());
+		this.people.update(age);
+		System.out.println("执行命令后："+people.toString()+"\n");
+	}
+	//修改姓名
+	public void opActionUpdateName(String name) {
+		System.out.println("执行命令前："+people.toString());
+		this.people.update(name);
+		System.out.println("执行命令后："+people.toString()+"\n");
 	}
 	
 	/**
@@ -34,9 +41,13 @@ public class ReceiverRole {
 	 * @author (ljh) @date 2015-3-16 上午11:34:41  
 	 * @return void
 	 */
-	public void rollBack() {
-		people.undo(peopleCache);
-		System.out.println("命令回滚后："+people.toString());
+	public void rollBackAge() {
+		people.setAge(peopleCache.getAge());
+		System.out.println("命令回滚后："+people.toString()+"\n");
+	}
+	public void rollBackName() {
+		people.setName(peopleCache.getName());
+		System.out.println("命令回滚后："+people.toString()+"\n");
 	}
 	
 }

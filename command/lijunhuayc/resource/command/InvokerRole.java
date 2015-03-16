@@ -18,16 +18,21 @@ public class InvokerRole {
 		this.command2 = command2;
 	}
 	
-	public void invoke(Command command) {
-		//根据具体情况选择执行某些命令
-		if(null != command){
-			command.execute();
-			return;
+	/**
+	 * @Description: 
+	 * @author (ljh) @date 2015-3-16 下午1:40:54 
+	 * @param args 0执行正常命令，1执行回滚命令
+	 * @return void
+	 */
+	public void invoke(int args) {
+		//可以根据具体情况选择执行某些命令
+		if(args == 0){
+			command1.execute();
+			command2.execute();
+		}else if(args == 1){
+			command1.undo();
+			command2.undo();
 		}
-		command1.execute();
-		command2.execute();
 	}
-	
-	
 	
 }
