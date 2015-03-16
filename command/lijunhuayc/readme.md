@@ -264,7 +264,7 @@ ClientRole.java
     	public void assembleAction() {
     		//创建一个命令接收者
     		ReceiverRole receiverRole1 = new ReceiverRole();    			//创建一个命令的具体实现对象，并指定命令接收者
-    		Command command1 = new ConcreteCommandImpl1(receiverRole1);    		Command command2 = new ConcreteCommandImpl2(receiverRole1);
+    		Command command1 = new ConcreteCommandImpl1(receiverRole1);           		    Command command2 = new ConcreteCommandImpl2(receiverRole1);
     
     		InvokerRole invokerRole = new InvokerRole();//创建一个命令调用者
     		invokerRole.setCommand1(command1);//为调用者指定命令对象1
@@ -488,4 +488,4 @@ static void setThreadSelf(Thread* thread){
 
 ####缺点
 使用命令模式可能会导致某些系统有过多的具体命令类。因为针对每一个命令都需要设计一个具体命令类，因此某些系统可能需要大量具体命令类，这将影响命令模式的使用。       
-比如上面的PeopleBean的属性增加，Receiver针对PeopleBean一个属性一个执行方法，一个Command的实现可以调用Receiver的一个执行方法，由此得需要设计多少个具体命令类呀呀呀呀呀呀呀呀！！
+比如上面的PeopleBean的属性增加，Receiver针对PeopleBean一个属性一个执行方法，一个Command的实现可以调用Receiver的一个执行方法，由此得需要设计多少个具体命令类呀！！
