@@ -36,12 +36,10 @@
 |    [享元模式](flyweight/lvtea0105)   | [lvtea0105](https://github.com/lvtea0105) |  撒丫子赶稿中 |
 |    [迭代器模式](iterator/haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  完成 |
 |    [责任链模式](chain-of-responsibility/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  完成  |
-|    [工厂方法模式](factory-method/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
-|    [抽象工厂模式](abstract-factory/AigeStudio) | [AigeStudio](https://github.com/AigeStudio)|  撒丫子赶稿中  |
 |    [状态模式](state/Thinan) | [Thinan](https://www.github.com/Thinan)|  撒丫子赶稿中  |
 |    [命令模式](command/lijunhuayc) | [lijunhuayc](https://github.com/lijunhuayc)|  待审核  |
-|    [桥接模式](bridge/shen0834) | [shen0834](https://github.com/shen0834)|  撒丫子赶稿中  |
-|    [原型模式](prototype/mr.simple) | [Mr.Simple](https://github.com/bboyfeiyu)|  待审核  |
+|    [桥接模式](bridge/shen0834) | [shen0834](https://github.com/shen0834)|  完成  |
+|    [原型模式](prototype/mr.simple) | [Mr.Simple](https://github.com/bboyfeiyu)|  完成  |
 
 
 
