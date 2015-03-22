@@ -1,8 +1,8 @@
-Android设计模式源码解析之${模式名} 
+Android设计模式源码解析之桥接模式 
 ====================================
-> 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis) 中 ${模式名} 分析  
-> Android系统版本： ${系统版本号，例如 4.2.1}         
-> 分析者：[${分析者}](${分析者 Github 地址})，分析状态：未完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：未开始   
+> 本文为 [Android 设计模式源码解析](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis) 中 桥接模式 分析  
+> Android系统版本： 4.2         
+> 分析者：[shen0834](https://github.com/shen0834)，分析状态：未完成，校对者：[Mr.Simple](https://github.com/bboyfeiyu)，校对状态：完成   
 
 ## 模式介绍
 
@@ -29,7 +29,7 @@ Android设计模式源码解析之${模式名}
 
 ## 模式的简单实现
 
-### 简单实现的介绍
+### 介绍
 
 其实Java的虚拟机就是一个很好的例子，在不同平台平台上，用不同的虚拟机进行实现，这样只需把Java程序编译成符合虚拟机规范的文件，且只用编译一次，便在不同平台上都能工作。 但是这样说比较抽象，用一个简单的例子来实现bridge模式。
 
