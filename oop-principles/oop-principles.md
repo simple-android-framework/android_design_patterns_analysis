@@ -23,7 +23,7 @@
 
 在Volley中，我觉得很能够体现SRP原则的就是HttpStack这个类族了。HttpStack定义了一个执行网络请求的接口，代码如下 : 
 
-```
+```java
 /**
  * An HTTP stack abstraction.
  */
@@ -59,7 +59,7 @@ public interface HttpStack {
 ### 2.2 示例
 还是以HttpStack为例，Volley定义了HttpStack来表示执行网络请求这个抽象概念。在执行网络请求时，我们只需要定义一个HttpStack对象，然后调用performRequest即可。至于HttpStack的具体实现由更高层的调用者给出。示例如下 :       
 
-```
+```java
 
     public static RequestQueue newRequestQueue(Context context, HttpStack stack) {
         File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR);
@@ -88,7 +88,7 @@ public interface HttpStack {
 
 BasicNetwork的代码如下:      
 
-```
+```java
 /**
  * A network performing Volley requests over an {@link HttpStack}.
  */
@@ -165,7 +165,7 @@ public class BasicNetwork implements Network {
 
 例如我们返回的数据格式是Json，那么我们使用JsonObjectRequest请求来获取数据，它会将结果转成JsonObject对象，我们看看JsonObjectRequest的核心实现。     
 
-```
+```java
 /**
  * A request for retrieving a {@link JSONObject} response body at a given URL, allowing for an
  * optional {@link JSONObject} to be passed in as part of the request body.
@@ -192,7 +192,7 @@ JsonObjectRequest通过实现Request抽象类的parseNetworkResponse解析服务
 
 例如Volley添加对图片请求的支持，即ImageLoader( 已内置 )。这个时候我的请求返回的数据是Bitmap图片。因此我需要在该类型的Request得到的结果是Request，但支持一种数据格式不能通过修改源码的形式，这样可能会为旧代码引入错误。但是你又需要支持新的数据格式，此时我们的开闭原则就很重要了，对扩展开放，对修改关闭。我们看看Volley是如何做的。        
 
-``` 
+```java 
 
 /**
  * A canned request for getting an image at a given URL and calling
@@ -284,7 +284,7 @@ public class ImageRequest extends Request<Bitmap> {
 ### 5.2 示例
 我们知道，在Volley的网络队列中是会对请求进行排序的。Volley内部使用PriorityBlockingQueue来维护网络请求队列，PriorityBlockingQueue需要调用Request类的compareTo函数来进行排序。试想一下，PriorityBlockingQueue其实只需要调用Request类的排序方法就可以了，其他的接口它根本不需要，即PriorityBlockingQueue只需要compareTo这个接口，而这个compareTo方法就是我们上述所说的最小接口。当然compareTo这个方法并不是Volley本身定义的接口方法，而是Java中的Comparable<T>接口，但我们这里只是为了学习本身，至于哪里定义的无关紧要。
 
-```
+```java
 public abstract class Request<T> implements Comparable<Request<T>> {
 
     /**
@@ -306,7 +306,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 
 PriorityBlockingQueue类相关代码 :     
 
-``` 
+```java 
 
 public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     implements BlockingQueue<E>, java.io.Serializable {
@@ -371,7 +371,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
 ### 6.2 示例
 例如，Volley中的Response缓存接口的设计。
 
-```
+```java
 /**
  * An interface for a cache keyed by a String with a byte array as data.
  */
@@ -410,7 +410,7 @@ public interface Cache {
 ```    
 Cache接口定义了缓存类需要实现的最小接口，依赖缓存类的对象只需要知道这些接口即可。例如缓存的具体实现类DiskBasedCache，该缓存类将Response序列化到本地,这就需要操作File以及相关的类。代码如下 :       
 
-```
+```java
 
 public class DiskBasedCache implements Cache {
 
@@ -443,5 +443,4 @@ public class DiskBasedCache implements Cache {
 
 
 ## 杂谈 
-
 面向对象六大原则在开发过程中极为重要，如果能够很好地将这些原则运用到项目中，再在一些合适的场景运用一些前人验证过的模式，那么开发出来的软件在一定程度上能够得到质量保证。其实稍微一想，这几大原则最终就化为这么几个关键词: 抽象、单一职责、最小化。那么在实际开发过程中如何权衡、实践这些原则，笔者也在不断地学习、摸索。我想学习任何的事物莫过于实践、经验与领悟，在这个过程中希望能够与大家分享知识、共同进步。
