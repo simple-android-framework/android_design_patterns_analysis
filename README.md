@@ -20,7 +20,10 @@
 |    [桥接模式](bridge/shen0834) | [shen0834](https://github.com/shen0834)|  
 |    [原型模式](prototype/mr.simple) | [Mr.Simple](https://github.com/bboyfeiyu)| 
 
-非常感谢做出分享的同学， 此处应该有掌声!!! 更多的信息我会在明天公布，谢谢。
+非常感谢做出分享的同学， 此处应该有掌声!!!      
+
+
+另外，该系列文章我们会根据技术发展、实战需求以及读者您的反馈重写所有章节，并且加入更加深入的核心机制分析以及模式在Android开发中的实战，完善后的文稿将会编撰成书出版，以便帮助大家更系统的学习，此时更真心地希望大家能够给出完善建议，以便本书更贴近您的需求，联系邮箱为 : simplecoder.h@gmail.com，谢谢。
 
 ## 更多模式
 [Android源码设计模式分析开源项目-开发分支](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis)。
