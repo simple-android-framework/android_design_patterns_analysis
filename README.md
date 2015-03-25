@@ -29,8 +29,8 @@
 [Android源码设计模式分析开源项目-开发分支](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis)。
 
 ## 参考资料
-* [GOF的设计模式：可复用面向对象软件的基础](http://pan.baidu.com/s/1i3zjaIx)
-* [设计模式之禅](http://pan.baidu.com/s/1sjjZCvj)
-* [Java与模式](http://pan.baidu.com/s/1i3sxzyH)
+* [GOF的设计模式：可复用面向对象软件的基础](http://item.jd.com/10057319.html)
+* [设计模式之禅](http://item.jd.com/11414555.html)
+* [Java与模式](http://item.jd.com/10094286.html)
 * [java-design-patterns](https://github.com/iluwatar/java-design-patterns)
 * [Java之美[从菜鸟到高手演变]之设计模式](http://blog.csdn.net/zhangerqing/article/details/8194653)
