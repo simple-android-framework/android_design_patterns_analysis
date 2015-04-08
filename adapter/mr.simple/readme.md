@@ -131,7 +131,7 @@ public class ObjectAdapter implements FiveVolt {
 ```java
 public class Test {
     public static void main(String[] args) {
-        ClassAdapter adapter = new ClassAdapter();
+        ObjectAdapter adapter = new ObjectAdapter(new Volt220());
         System.out.println("输出电压 : " + adapter.getVolt5());
     }
 }
