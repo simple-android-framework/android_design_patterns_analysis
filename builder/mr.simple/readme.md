@@ -73,8 +73,6 @@ package com.dp.example.builder;
 
 /**
  * Apple电脑
- * @author mrsimple
- *
  */
 public class AppleComputer extends Computer {
 
@@ -101,63 +99,11 @@ public class AppleComputer extends Computer {
 
 package com.dp.example.builder;
 
-/**
- * builder抽象类
- * 
- * @author mrsimple
- *
- */
-public abstract class Builder {
-	// 设置CPU核心数
-	public abstract void buildCPU(int core);
-
-	// 设置内存
-	public abstract void buildRAM(int gb);
-
-	// 设置操作系统
-	public abstract void buildOs(String os);
-
-	// 创建Computer
-	public abstract Computer create();
-
-}
-
-package com.dp.example.builder;
-
-/**
- * Apple电脑
- * @author mrsimple
- *
- */
-public class AppleComputer extends Computer {
-
-	protected AppleComputer() {
-
-	}
-
-	@Override
-	public void setCPU(int core) {
-		mCpuCore = core;
-	}
-
-	@Override
-	public void setRAM(int gb) {
-		mRamSize = gb;
-	}
-
-	@Override
-	public void setOs(String os) {
-		mOs = os;
-	}
-
-}
 
 package com.dp.example.builder;
 
 /**
  * builder抽象类
- * 
- * @author mrsimple
  *
  */
 public abstract class Builder {
