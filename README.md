@@ -10,8 +10,6 @@
 |    [Builder模式](builder/mr.simple)  	 | [Mr.Simple](https://github.com/bboyfeiyu)|  
 |    [外观模式](facade/elsdnwn)   	     | [elsdnwn](https://github.com/elsdnwn)、[Mr.Simple](https://github.com/bboyfeiyu)|   
 |    [模板方法](template-method/mr.simple)   | [Mr.Simple](https://github.com/bboyfeiyu) | 
-|    [适配器模式](adapter/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) | 
-|    [观察者模式](observer/mr.simple)    | [Mr.Simple](https://github.com/bboyfeiyu) |  
 |    [策略模式](strategy/gkerison)      | [GKerison](https://github.com/GKerison) | 
 |    [代理模式](proxy/singwhatiwanna)   | [singwhatiwanna](https://github.com/singwhatiwanna) |  
 |    [迭代器模式](iterator/haoxiqiang) | [Haoxiqiang](https://github.com/Haoxiqiang)|  
