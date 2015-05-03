@@ -142,7 +142,7 @@ public class BasicNetwork implements Network {
 
 ### 3.2 示例
 采用依赖倒置原则可以减少类间的耦合性，提高系统的稳定性，降低并行开发引起的风险，提高代码的可读性和可维护性。      
-第二章节中的BasicNetwork实现类依赖于HttpStack接口( 抽象 )，而不依赖于HttpClientStack与HurlStack实现类 ( 细节 )，这就是典型的依赖倒置原则的体现。加入BasicNetwork直接依赖了HttpClientStack，那么HurlStack就不能传递给了，除非HurlStack继承自HttpClientStack。但这么设计明显不符合逻辑，HurlStack与HttpClientStack并没有任何的is-a的关系，而且即使有也不能这么设计，因为HttpClientStack是一个具体类而不是抽象，如果HttpClientStack作为BasicNetwork构造函数的参数，那么以为这后续的扩展都需要继承自HttpClientStack。这简直是一件不可忍受的事了！        
+第二章节中的BasicNetwork实现类依赖于HttpStack接口( 抽象 )，而不依赖于HttpClientStack与HurlStack实现类 ( 细节 )，这就是典型的依赖倒置原则的体现。假如BasicNetwork直接依赖了HttpClientStack，那么HurlStack就不能传递给了，除非HurlStack继承自HttpClientStack。但这么设计明显不符合逻辑，HurlStack与HttpClientStack并没有任何的is-a的关系，而且即使有也不能这么设计，因为HttpClientStack是一个具体类而不是抽象，如果HttpClientStack作为BasicNetwork构造函数的参数，那么以为这后续的扩展都需要继承自HttpClientStack。这简直是一件不可忍受的事了！        
 
 
 ### 3.3 优点
