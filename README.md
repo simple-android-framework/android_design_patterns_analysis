@@ -21,7 +21,7 @@
 非常感谢做出分享的同学， 此处应该有掌声!!!      
 
 
-另外，该系列文章我们会根据技术发展、实战需求以及读者您的反馈重写所有章节，并且加入更加深入的核心机制分析以及模式在Android开发中的实战，完善后的文稿将会编撰成书出版，以便帮助大家更系统的学习，此时更真心地希望大家能够给出完善建议，以便本书更贴近您的需求，联系邮箱为 : simplecoder.h@gmail.com，谢谢。
+另外，该系列文章我们会根据技术发展、实战需求以及读者您的反馈重写所有章节，并且加入更加深入的核心机制分析以及模式在Android开发中的实战，以便帮助大家更系统的学习，购买地址在为 [《Android源码设计模式解析与实战》](http://item.jd.com/11793928.html)。另外，我们的联系邮箱为 : simplecoder.h@gmail.com，谢谢。
 
 ## 更多模式
 [Android源码设计模式分析开源项目-开发分支](https://github.com/simple-android-framework-exchange/android_design_patterns_analysis)。
