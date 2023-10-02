@@ -31,7 +31,7 @@ Android设计模式源码解析之Proxy模式
 ### 实现源码
 抽象对象角色
 
-```
+```java
 public abstract class AbstractObject {
     //操作
     public abstract void operation();
@@ -39,7 +39,7 @@ public abstract class AbstractObject {
 ```
 
 目标对象角色
-```
+```java
 public class RealObject extends AbstractObject {
     @Override
     public void operation() {
@@ -50,7 +50,7 @@ public class RealObject extends AbstractObject {
 ```
 
 代理对象角色
-```
+```java
 public class ProxyObject extends AbstractObject{
     RealObject realObject = new RealObject();
     @Override
@@ -65,7 +65,7 @@ public class ProxyObject extends AbstractObject{
 ```
 
 客户端
-```
+```java
 public class Client {
     public static void main(String[] args) {
         AbstractObject obj = new ProxyObject();
@@ -81,7 +81,7 @@ Binder一个很重要的作用是：将客户端的请求参数通过Parcel包�
 为了更好地说明Binder，这里我们先手动实现了一个Binder。为了使得逻辑更清晰，这里简化一下，我们来模拟一个银行系统，这个银行提供的功能只有一个：即查询余额，只有传递一个int的id过来，银行就会将你的余额设置为id*10，满足下大家的发财梦。
 
 1. 先定义一个Binder接口
- ```
+ ```java
 package com.ryg.design.manualbinder;
 
 import android.os.IBinder;
@@ -100,7 +100,7 @@ public interface IBank extends IInterface {
 ```
 
 2.创建一个Binder并实现这个上述接口
-```
+```java
 package com.ryg.design.manualbinder;
 
 import android.os.Binder;
@@ -196,7 +196,7 @@ public class BankImpl extends Binder implements IBank {
 ok，到此为止，我们的Binder就完成了，这里只要创建服务端和客户端，二者就能通过我们的Binder来通信了。这里就不做这个示例了，我们的目的是分析代理模式在Binder中的使用。
 
 我们看上述Binder的实现中，有一个叫做“Proxy”的类，它的构造方法如下：
-```
+```java
   Proxy(IBinder remote) {
       mRemote = remote;
   }
